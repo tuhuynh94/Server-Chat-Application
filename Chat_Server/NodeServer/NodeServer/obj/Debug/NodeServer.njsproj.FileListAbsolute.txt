@@ -1,0 +1,1 @@
+C:\Users\gardo\Desktop\Chat\trunk\Chat_Server\NodeServer\NodeServer\obj\Debug\NodeServer.njsprojResolveAssemblyReference.cache
