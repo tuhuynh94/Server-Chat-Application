@@ -18,12 +18,9 @@ $phone = $_POST["phone"];
 $sql = "SELECT from_phone, to_phone, invited_at FROM invite_friend WHERE to_phone = '" . $phone . "'";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
+$jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+echo json_encode($jsonData);
 
-    $row = $result->fetch_assoc();
-} else {
-    echo "s::0 this user is not exists";
-}
 $conn->close();
 
 ?>

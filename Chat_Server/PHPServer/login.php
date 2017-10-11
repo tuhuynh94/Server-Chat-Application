@@ -17,7 +17,8 @@ $phone = $_POST["phone"];
 $pw = $_POST["pw"];
 
 
-$sql = "SELECT phone, username, email, birthday, is_active FROM users WHERE phone = '" . $phone . "' AND password = '" . $pw . "'";
+$sql = "SELECT phone, username,birthday, email, conversations  FROM users WHERE phone = '" . $phone . "' OR username =  '" . $phone . "' AND password = '" . $pw . "'";
+
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -26,7 +27,7 @@ if ($result->num_rows > 0) {
 
     echo json_encode($row, JSON_UNESCAPED_UNICODE);
 } else {
-    echo "s::0 this user is not exists";
+    echo "error";
 }
 $conn->close();
 

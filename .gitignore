@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+Chat_Server/.vscode/tasks.json
+Chat_Server/.vscode/launch.json

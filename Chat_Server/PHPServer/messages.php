@@ -13,18 +13,15 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8");
 
-$conversation_id = $_POST["conversation_id"];
+$conversation_id = explode(';',$_POST["conversations"]);
 
-$sql = "SELECT * FROM messages WHERE conversation_id = '" . $conversation_id . "'";
+$sql = "SELECT * FROM messages WHERE conversation_id IN '" . $conversation_id . "'";
+echo $sql +"\n";
 $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
+$jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+echo json_encode($jsonData);
 
-    $row = $result->fetch_assoc();
-    echo json_encode($row, JSON_UNESCAPED_UNICODE);
-} else {
-    echo "s::0 this user is not exists";
-}
 $conn->close();
 
 ?>
