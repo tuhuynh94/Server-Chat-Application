@@ -13,10 +13,9 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8");
 
-$phone = $_POST["phone"];
+$conversation_id = $_POST["conversations"];
 
-
-$sql = "SELECT conversation_id, conversation_name, creator, created_at, updated_at FROM conversations WHERE phone = '" . $phone . "' ";
+$sql = "SELECT conversation_id, conversation_name, creator, created_at, updated_at FROM conversations WHERE conversation_id IN (" . $conversation_id . "0)";
 $result = $conn->query($sql);
 
 $jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);

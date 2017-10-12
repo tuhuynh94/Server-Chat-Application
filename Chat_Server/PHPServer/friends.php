@@ -13,10 +13,10 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8");
 
-// $phone = $_POST["phone"];
-$phone = "1";
+$phone = $_POST["phone"];
+//$phone = "1";
 
-$sql = "SELECT phone, friend_phone,username, add_at FROM friends WHERE phone = '" . $phone . "'";
+$sql = "SELECT phone, friend_phone,username, add_at, birthday FROM friends WHERE phone = '" . $phone . "'";
 $result = $conn->query($sql);
 
 $jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
