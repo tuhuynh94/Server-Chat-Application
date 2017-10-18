@@ -13,14 +13,13 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8");
 
-$conversation_id = $_POST["conversations"];
+$conversation = $_POST["conversation_id"];
+$mem = $_POST["mem"];
 
-$sql = "SELECT conversation_id, conversation_name, creator, created_at, updated_at,member FROM conversations WHERE conversation_id IN (" . $conversation_id . "0)";
-$result = $conn->query($sql);
 
-$jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
-echo json_encode($jsonData);
-  
+$sql = "UPDATE `conversations` SET member = '".$mem."' WHERE conversation_id ='".$conversation."';
+$result = $conn->query($sql);    
+
 $conn->close();
 
 ?>

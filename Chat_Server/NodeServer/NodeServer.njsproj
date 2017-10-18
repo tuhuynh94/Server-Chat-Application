@@ -38,13 +38,19 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Handlers\" />
+    <Folder Include="Listener\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Handlers\hChat.js" />
+    <Compile Include="Handlers\hConversation.js" />
+    <Compile Include="Handlers\hFriend.js" />
+    <Compile Include="Handlers\hMessage.js" />
     <Compile Include="Handlers\hRegister.js" />
     <Compile Include="Handlers\hUser.js" />
-    <Compile Include="Handlers\hClient.js" />
+    <Compile Include="Listener\lis_Conversation.js" />
+    <Compile Include="Listener\lis_Friend.js" />
+    <Compile Include="Listener\lis_User.js" />
     <Compile Include="Models\database.js" />
     <Compile Include="Models\mConversations.js" />
     <Compile Include="Models\mFriends.js" />

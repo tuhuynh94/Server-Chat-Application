@@ -13,14 +13,13 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8");
 
-$conversation_id = $_POST["conversations"];
+$phone = $_POST["phone"];
+$other_phone = $_POST["other_phone"];
 
-$sql = "SELECT conversation_id, conversation_name, creator, created_at, updated_at,member FROM conversations WHERE conversation_id IN (" . $conversation_id . "0)";
+
+$sql = "DELETE FROM friends WHERE phone = '" . $phone . "' AND friend_phone = '". $other_phone ."'";
 $result = $conn->query($sql);
 
-$jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
-echo json_encode($jsonData);
-  
 $conn->close();
 
 ?>
