@@ -16,22 +16,14 @@ $conn->set_charset("utf8");
 $phone = $_POST["phone"];
 $other_phone = $_POST["other_phone"];
 
+$sql ="INSERT INTO conversations (conversation_id, conversation_name,member,creator) VALUES ('NULL','".$conversation_name."','".$member."','".$creator."',,,);";
+    //echo($sql);
+    $conn->query($sql);    
+ 
+$sql = "SELECT * from conversations ORDER BY id DESC LIMIT 1";
+$result = mysqli_query($conn,$sql);
 
-$sql = "SELECT phone, birthday,username FROM users WHERE phone = '" . $other_phone . "'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-
-    $row = $result->fetch_assoc();    
-    
-    $friend_user_name = $row["username"];
-    $friends_birthday = $row["birthday"];
-    $friend_username = $row["username"];
-    
-    $sql = "INSERT INTO friends (phone, friend_phone,birthday,username) VALUES ('".$phone."', ".$other_phone.",'".$friends_birthday."','".$friend_user_name."')";
-    $result = $conn->query($sql);    
-}
-
+$jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $conn->close();
 
 ?>

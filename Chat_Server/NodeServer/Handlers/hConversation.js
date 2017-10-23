@@ -17,7 +17,7 @@ var conversation = (function () {
                 socket.join(tmp.conversation_id);
                 tmp = null;
             }
-        }
+    }
 
         console.log(socket.conversations);
         console.log(io.sockets.adapter.rooms);

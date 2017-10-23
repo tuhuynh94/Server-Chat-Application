@@ -98,7 +98,7 @@ var hFriend = (function () {
         , response_add_friend: _response_add_friend
         // , update_new_friend: _update_new_friend
         // , inform_unfriend: _inform_unfriend
-        ,_unfriend: _unfriend
+        ,unfriend: _unfriend
     };
 
 })();

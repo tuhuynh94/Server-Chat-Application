@@ -21,6 +21,6 @@ exports = module.exports = function(io,socket,connection){
     // });
     //--------------------recive unfriend
     socket.on('unfriend', function (data) {
-        hFriend._unfriend(io, socket, data);
+        hFriend.unfriend(io, socket, data);
     });
 }
