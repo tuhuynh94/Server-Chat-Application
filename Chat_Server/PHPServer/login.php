@@ -16,7 +16,7 @@ $conn->set_charset("utf8");
 $phone = $_POST["phone"];
 $pw = $_POST["pw"];
 
-$sql = "SELECT phone, username,birthday, email, conversations  FROM users WHERE phone = '" . $phone . "' OR username =  '" . $phone . "' AND password = '" . $pw . "'";
+$sql = "SELECT phone, username,birthday, email, conversations, image_source, status FROM users WHERE phone = '" . $phone . "' OR username =  '" . $phone . "' AND password = '" . $pw . "'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 12, 2017 lúc 09:21 AM
+-- Thời gian đã tạo: Th10 23, 2017 lúc 10:29 AM
 -- Phiên bản máy phục vụ: 10.1.25-MariaDB
 -- Phiên bản PHP: 5.6.31
 
@@ -31,10 +31,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `conversations` (
   `conversation_id` int(11) NOT NULL,
   `conversation_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `member` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'name of all member- seperate by '';''',
+  `member` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'name of all member- seperate by '',''',
   `creator` varchar(12) COLLATE utf8_unicode_ci NOT NULL COMMENT 'phone',
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` tinyint(4) NOT NULL COMMENT '0 -- chat2; 1 -- chat group'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -43,8 +43,8 @@ CREATE TABLE `conversations` (
 --
 
 INSERT INTO `conversations` (`conversation_id`, `conversation_name`, `member`, `creator`, `created_at`, `updated_at`, `type`) VALUES
-(1, NULL, '', '1', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
-(2, NULL, '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
+(1, NULL, '', '1', '2017-10-18 00:00:00', '2017-10-16 00:00:00', 0),
+(2, NULL, '', '', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -55,7 +55,8 @@ INSERT INTO `conversations` (`conversation_id`, `conversation_name`, `member`, `
 CREATE TABLE `friends` (
   `phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `friend_phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-  `birthday` date NOT NULL,
+  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `birthday` date NOT NULL DEFAULT '1990-01-01',
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `add_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -64,11 +65,11 @@ CREATE TABLE `friends` (
 -- Đang đổ dữ liệu cho bảng `friends`
 --
 
-INSERT INTO `friends` (`phone`, `friend_phone`, `birthday`, `username`, `add_at`) VALUES
-('01685574968', '01685574967', '0000-00-00', '', '2017-09-11 00:00:00'),
-('01685574969', '01685574968', '0000-00-00', '', '2017-09-11 00:00:00'),
-('1', '01685574967', '0000-00-00', '', '2017-09-11 00:00:00'),
-('1', '01685574968', '0000-00-00', '', '2017-09-11 00:00:00');
+INSERT INTO `friends` (`phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`) VALUES
+('01685574968', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
+('01685574969', '01685574968', '', '2017-10-08', '', '2017-09-11 00:00:00'),
+('1', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
+('1', '01685574968', '', '2017-10-01', '', '2017-09-11 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -90,7 +91,7 @@ CREATE TABLE `invite_friend` (
 INSERT INTO `invite_friend` (`from_phone`, `from_user`, `to_phone`, `invited_at`) VALUES
 ('1', '', '1', '2017-09-18 00:00:00'),
 ('1', '', '2', '2017-09-28 10:26:27'),
-('2', '', '1', '0000-00-00 00:00:00');
+('2', '', '1', '2017-10-18 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -138,7 +139,9 @@ CREATE TABLE `users` (
   `phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `birthday` date DEFAULT NULL,
+  `image_source` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `birthday` date NOT NULL DEFAULT '1990-01-01',
   `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `conversations` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'conversationid cach nhau '','''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -147,10 +150,10 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`phone`, `password`, `username`, `birthday`, `email`, `conversations`) VALUES
-('01685574968', '1', 'user1', NULL, NULL, ''),
-('1', '1', 'user2', NULL, NULL, '1,'),
-('4', '1', 'user1', NULL, NULL, '');
+INSERT INTO `users` (`phone`, `password`, `username`, `image_source`, `status`, `birthday`, `email`, `conversations`) VALUES
+('1', '1', 'user2', '', '', '0000-00-00', NULL, '1,2'),
+('123123123123', '1', 'user1', '', '', '2017-10-01', NULL, '1'),
+('4', '1', 'user1', '', '', '0000-00-00', NULL, '');
 
 --
 -- Chỉ mục cho các bảng đã đổ
