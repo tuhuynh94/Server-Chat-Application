@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 23, 2017 lúc 10:31 AM
+-- Thời gian đã tạo: Th10 24, 2017 lúc 05:32 AM
 -- Phiên bản máy phục vụ: 10.1.25-MariaDB
 -- Phiên bản PHP: 5.6.31
 
@@ -43,8 +43,14 @@ CREATE TABLE `conversations` (
 --
 
 INSERT INTO `conversations` (`conversation_id`, `conversation_name`, `member`, `creator`, `created_at`, `updated_at`, `type`) VALUES
-(1, NULL, '', '1', '2017-10-18 00:00:00', '2017-10-16 00:00:00', 0),
-(2, NULL, '', '', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0);
+(1, '123', '1,2,3', '1', '2017-10-18 00:00:00', '2017-10-24 09:16:37', 0),
+(2, NULL, '', '', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0),
+(3, '123', '1,2,3', '11', '2017-10-24 09:22:26', '2017-10-24 09:22:26', 0),
+(4, '123', '1,2,3', '11', '2017-10-24 09:23:07', '2017-10-24 09:23:07', 0),
+(5, '123', '1,2,3', '11', '2017-10-24 09:29:02', '2017-10-24 09:29:02', 0),
+(6, '123', '1,2,3', '11', '2017-10-24 09:37:13', '2017-10-24 09:37:13', 0),
+(7, '123', '1,2,3', '11', '2017-10-24 09:41:47', '2017-10-24 09:41:47', 0),
+(8, '123', '1,2,3', '11', '2017-10-24 09:41:56', '2017-10-24 09:41:56', 0);
 
 -- --------------------------------------------------------
 
@@ -102,7 +108,7 @@ INSERT INTO `invite_friend` (`from_phone`, `from_user`, `to_phone`, `invited_at`
 CREATE TABLE `messages` (
   `message_id` int(11) NOT NULL,
   `conversation_id` int(11) NOT NULL,
-  `from_phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `creator` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `message` text COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `is_send` tinyint(4) NOT NULL COMMENT '0: dont send |  1: sent'
@@ -112,7 +118,7 @@ CREATE TABLE `messages` (
 -- Đang đổ dữ liệu cho bảng `messages`
 --
 
-INSERT INTO `messages` (`message_id`, `conversation_id`, `from_phone`, `message`, `created_at`, `is_send`) VALUES
+INSERT INTO `messages` (`message_id`, `conversation_id`, `creator`, `message`, `created_at`, `is_send`) VALUES
 (1, 1, '1', 'dsfsdfsdf', '2017-10-19 00:00:00', 1),
 (2, 1, '1', 'qưeqweqwwe', '2017-10-19 00:00:00', 1);
 
@@ -203,7 +209,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT cho bảng `messages`
 --
