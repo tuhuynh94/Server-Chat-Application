@@ -24,7 +24,7 @@ $conn->query($sql);
 $result = mysqli_query($conn,$sql);
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-    $sql = "INSERT INTO friends (phone, friend_phone,username, birthday,email,) VALUES ('".$phone."', '".$other_phone."', '".$row["username"]."', '".$row["birthday"]."',, '".$row["email"]."')";
+    $sql = "INSERT INTO friends (phone, friend_phone,username, birthday,email,add_at) VALUES ('".$phone."', '".$other_phone."', '".$row["username"]."', '".$row["birthday"]."',, '".$row["email"]."',NOW())";
     $jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
     echo json_encode($jsonData);
 }

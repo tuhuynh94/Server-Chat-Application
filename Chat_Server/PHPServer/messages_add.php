@@ -17,10 +17,11 @@ $conversation_id = $_POST["conversations"];
 
 $sql ="INSERT INTO messages (message_id, conversation_id, from_phone, message, created_at, is_send ) VALUES ();";
 $conn->query($sql); 
-$sql = "SELECT * from conversations ORDER BY id DESC LIMIT 1";
+$sql = "SELECT * from conversations ORDER BY message_id DESC LIMIT 1";
 $result = mysqli_query($conn,$sql);
 
 $jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
 $conn->close();
 
 ?>

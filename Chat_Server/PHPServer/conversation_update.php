@@ -15,11 +15,10 @@ $conn->set_charset("utf8");
 
 $conversation = $_POST["conversation_id"];
 $mem = $_POST["mem"];
-
-
-$sql = "UPDATE `conversations` SET member = '".$mem."' WHERE conversation_id ='".$conversation."';
+$name = $_POST["name"];
+$sql = "UPDATE `conversations` SET member = '".$mem."', conversation_name = '".$name."', updated_at = NOW() WHERE conversation_id ='".$conversation."'";
+echo $sql;
 $result = $conn->query($sql);    
 
 $conn->close();
-
 ?>
