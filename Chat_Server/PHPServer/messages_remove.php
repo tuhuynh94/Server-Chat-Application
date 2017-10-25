@@ -13,12 +13,12 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8");
 
-$conversation = $_POST["conversation_id"];
-$mem = $_POST["mem"];
-$name = $_POST["name"];
-$sql = "UPDATE `conversations` SET member = '".$mem."', conversation_name = '".$name."', updated_at = NOW() WHERE conversation_id ='".$conversation."'";
-//echo $sql;
-$result = $conn->query($sql);    
+$conversation_id = $_POST["conversation_id"];
+$message_id = $_POST["message_id"];
+
+$sql ="DELETE FROM mesages WHERE message_id  = '".$message_id."' AND conversation_id  = '".$conversation_id."' ";
+$conn->query($sql); 
 
 $conn->close();
+
 ?>

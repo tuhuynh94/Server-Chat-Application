@@ -14,16 +14,19 @@ if ($conn->connect_error) {
 $conn->set_charset("utf8");
 
 $conversation_id = $_POST["conversations"];
+$creator = $_POST["creator"];
+$message = $_POST["message"];
 
-$sql ="INSERT INTO messages (message_id, conversation_id, from_phone, message, created_at, is_send ) VALUES ();";
+
+$sql ="INSERT INTO messages (message_id, conversation_id, creator, message, created_at)
+ VALUES ('NULL','".$conversation_id."','".$creator."','".$message."',NOW());";
 $conn->query($sql); 
-$sql = "SELECT * from conversations ORDER BY message_id DESC LIMIT 1";
+$sql = "SELECT * from messages ORDER BY message_id DESC LIMIT 1";
 $result = mysqli_query($conn,$sql);
 
 $jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
+echo json_encode($jsonData);
 
 $conn->close();
 
 ?>
-
-<?php
