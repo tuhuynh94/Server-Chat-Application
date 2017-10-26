@@ -15,6 +15,11 @@ exports = module.exports = function(io,socket,connection){
     socket.on('response_add_friend', function (data) {
         hFriend.response_add_friend(io, socket, data);
     });
+ //-------------------- response_add_friend
+    socket.on('update_add_friend', function (data) {
+        hFriend.update_add_friend(io, socket, data);
+    });
+    
     // //-------------------- unfriend
     // socket.on('un_friend', function (data) {
     //     hFriend.inform_unfriend(io, socket, data);

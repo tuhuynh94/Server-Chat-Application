@@ -3,7 +3,7 @@ var db = require('../Models/database');
 
 var hFriend = (function () {
 
-    var _load_friends = function (socket) {        
+    var _load_friends = function (socket) {
         console.log("========== _load_friends =========");
         socket.friends = db.friends().filter(f => f.phone == socket.phone || f.friend_phone == socket.phone);
         console.log(socket.friends.length);
@@ -24,7 +24,7 @@ var hFriend = (function () {
             io.sockets.connected[otherSocket].emit('return_invite_friend', {
                 from: socket.phone,
                 from_username: socket.username,
-                birthday:socket.birthday,                
+                birthday: socket.birthday,
                 to: sentTo,
             });
         }
@@ -39,39 +39,40 @@ var hFriend = (function () {
                 is_accept: true,
                 from: socket.phone,
                 from_username: socket.username,
-                birthday:socket.birthday,                
+                birthday: socket.birthday,
                 to: sentTo,
             });
+
+            socket.friends.push({
+                email: data["email"],
+                birthday: data["birthday"],
+                username: data["username"],
+                add_at: data["add_at"],
+                phone: socket.phone,
+                friend_phone: from
+            });
+
         } else {
             io.sockets.connected[otherSocket].emit('return_response_invite_friend', {
                 is_accept: false,
                 from: socket.phone,
                 from_username: socket.username,
-                birthday:socket.birthday,                
+                birthday: socket.birthday,
                 to: sentTo,
             });
         }
     };
 
-    // var _update_new_friend = function (socket, data) {
-    //     socket.friends.push({
-    //         phone: data['phone']
-    //         , friend_phone: data["friend_phone"]
-    //         , add_at: data['add_at']
-    //     });
-    // }
-
-    // var _inform_unfriend = function (socket, data) {
-    //     console.log("========== _unfriend =========");
-    //     var index = socket.friends.indexOf(f=>f.phone == socket.phone && f.friend_phone == data['phone']);        
-    //     socket.friends.splice(index,1);
-
-    //     var otherSocket = io.sockets.sockets[data['phone']];
-    //     io.sockets.connected[otherSocket].emit('inform_un_friend',{
-    //         friend_phone: socket.phone
-    //         ,friend_name: socket.username
-    //     })
-    // };
+    var update_add_friend = function (socket, data) {
+         socket.friends.push({
+                email: data["email"],
+                birthday: data["birthday"],
+                username: data["username"],
+                add_at: data["add_at"],
+                phone: socket.phone,
+                friend_phone: data["other_phone"]
+            });
+    }
 
     var _unfriend = function (socket, data) {
         console.log("========= recieve ========")
@@ -82,22 +83,21 @@ var hFriend = (function () {
 
         if (flat) {
             io.sockets.connected[otherSocket].emit('unfriend', {
-                friend_phone: socket.phone
-                , friend_name: socket.username
-                , flat: false
+                friend_phone: socket.phone,
+                friend_name: socket.username,
+                flat: false
             })
         }
 
-        var index = socket.friends.indexOf(f => f.phone == socket.phone || f.friend_phone == other_phone);        
-         socket.friends.splice(index,1);
+        var index = socket.friends.indexOf(f => f.phone == socket.phone || f.friend_phone == other_phone);
+        socket.friends.splice(index, 1);
     }
 
     return {
-        load_friends: _load_friends
-        , request_add_friend: _request_add_friend
-        , response_add_friend: _response_add_friend
-        // , update_new_friend: _update_new_friend
-        // , inform_unfriend: _inform_unfriend
+        load_friends: _load_friends,
+        request_add_friend: _request_add_friend
+        ,response_add_friend: _response_add_friend
+        , update_add_friend: _update_add_friend
         ,unfriend: _unfriend
     };
 
