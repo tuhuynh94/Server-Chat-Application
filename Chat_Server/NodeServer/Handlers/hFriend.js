@@ -97,7 +97,6 @@ var hFriend = (function () {
         load_friends: _load_friends,
         request_add_friend: _request_add_friend
         ,response_add_friend: _response_add_friend
-        , update_add_friend: _update_add_friend
         ,unfriend: _unfriend
     };
 

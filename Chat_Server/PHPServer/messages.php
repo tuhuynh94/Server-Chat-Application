@@ -15,7 +15,8 @@ $conn->set_charset("utf8");
 
 $conversation_id = $_POST["conversations"];
 
-$sql = "SELECT message_id, conversation_id, from_phone, message, created_at, is_send,creator FROM messages WHERE conversation_id IN( " . $conversation_id . "0)";
+$sql = "SELECT message_id, conversation_id, message, created_at, is_send,creator FROM messages WHERE conversation_id IN( '" . $conversation_id . "0')";
+//echo $sql;
 $result = $conn->query($sql);
 
 $jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);
