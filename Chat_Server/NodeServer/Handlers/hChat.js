@@ -4,11 +4,14 @@ var hChat = (function () {
     var _send_msg = function (io, socket, data) {
         console.log("========== send message =========");
         // io.sockets.connected[data.name].emit('send_msg', {content: data.content, client_id: socket.id});                
-        io.to(room_name).emit('chat_message', {
+        socket.broadcast.to(data['conversation_id']).emit('chat_message', {
              content:data["msg"], 
              creator:socket.phone,
              created_at: data["create_at"]
         });
+        console.log(
+            "conversation_id: " + data['conversation_id'] + "content:" + data["msg"] + ",creator:" + socket.phone + ",created_at: " + data["create_at"]
+        );
     };
 
     var _edit_msg = function (socket, data) {
