@@ -63,7 +63,7 @@ var hFriend = (function () {
         }
     };
 
-    var update_add_friend = function (socket, data) {
+    var _update_add_friend = function (socket, data) {
          socket.friends.push({
                 email: data["email"],
                 birthday: data["birthday"],
