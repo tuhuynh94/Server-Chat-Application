@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 $conn->set_charset("utf8");
 
-$conversation_id = $_POST["conversations"];
+$conversation_id = $_POST["conversation_id"];
 $creator = $_POST["creator"];
 $message = $_POST["message"];
 
