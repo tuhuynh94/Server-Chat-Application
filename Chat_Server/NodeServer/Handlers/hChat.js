@@ -7,7 +7,8 @@ var hChat = (function () {
         socket.broadcast.to(data['conversation_id']).emit('chat_message', {
              content:data["msg"], 
              creator:socket.phone,
-             created_at: data["create_at"]
+             created_at: data["create_at"],
+             conversation_id: data['conversation_id']
         });
         console.log(
             "conversation_id: " + data['conversation_id'] + " content:" + data["msg"] + " ,creator:" + socket.phone + " ,created_at: " + data["create_at"]
