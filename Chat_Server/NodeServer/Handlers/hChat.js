@@ -10,7 +10,7 @@ var hChat = (function () {
              created_at: data["create_at"]
         });
         console.log(
-            "conversation_id: " + data['conversation_id'] + "content:" + data["msg"] + ",creator:" + socket.phone + ",created_at: " + data["create_at"]
+            "conversation_id: " + data['conversation_id'] + " content:" + data["msg"] + " ,creator:" + socket.phone + " ,created_at: " + data["create_at"]
         );
     };
 
