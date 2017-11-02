@@ -34,4 +34,5 @@ io.on('connection',function(socket){
     var friends = require('./Listener/lis_Friend')(io,socket,connection);
     var user = require('./Listener/lis_User')(io, socket, connection);
     var conversation = require('./Listener/lis_Conversation')(io, socket, connection);
+    var conversation = require('./Listener/lis_Chat')(io, socket, connection);
 });

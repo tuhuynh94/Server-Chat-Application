@@ -3,10 +3,19 @@ var hChat = (function () {
 
     var _send_msg = function (io, socket, data) {
         console.log("========== send message =========");
-        io.sockets.connected[data.name].emit('send_msg', {content: data.content, client_id: socket.id});     
+        // io.sockets.connected[data.name].emit('send_msg', {content: data.content, client_id: socket.id});                
+        io.to(room_name).emit('chat_message', {
+             content:data["msg"], 
+             creator:socket.phone,
+             created_at: data["create_at"]
+        });
     };
 
     var _edit_msg = function (socket, data) {
+        console.log("========== edit message =========");
+
+    };
+    var _del_msg = function (socket, data) {
         console.log("========== edit message =========");
 
     };
@@ -19,7 +28,8 @@ var hChat = (function () {
     return{
         send_msg: _send_msg,
         send_group_msg : _send_group_msg,
-        edit_msg: _edit_msg
+        edit_msg: _edit_msg,
+        del_msg:_del_msg
     };
     
 })();
