@@ -11,6 +11,7 @@ var connection = mysql.createConnection({
     password: '',
     database: 'chat',
     charset: 'utf8_general_ci'
+    
 });
 var db = require('./Models/database');
 var hUser = require('./Handlers/hUser');
@@ -34,5 +35,5 @@ io.on('connection',function(socket){
     var friends = require('./Listener/lis_Friend')(io,socket,connection);
     var user = require('./Listener/lis_User')(io, socket, connection);
     var conversation = require('./Listener/lis_Conversation')(io, socket, connection);
-    var conversation = require('./Listener/lis_Chat')(io, socket, connection);
+    var chat = require('./Listener/lis_Chat')(io, socket, connection);
 });

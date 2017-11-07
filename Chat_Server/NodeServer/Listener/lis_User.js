@@ -23,6 +23,6 @@ exports = module.exports = function(io,socket,connection){
     });
     //-------------------- forgot_pass
     socket.on('forgot_pass', function (data) {
-        hRegister.request(socket,data);
+        hRegister.request(socket,data, connection);
     });
 }

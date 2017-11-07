@@ -5,6 +5,7 @@
   "main": "app.js",
   "author": "Thuong + Tu",
   "dependencies": {
+    "authy-client": "^1.0.10",
     "express": "^4.15.4",
     "mysql": "^2.14.1",
     "sinch-rtc": "^1.4.5",

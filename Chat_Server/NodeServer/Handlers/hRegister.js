@@ -1,12 +1,14 @@
-﻿var SinchClient = require('sinch-rtc');
-var sinchClient = new SinchClient({
-    applicationKey: "ccefb163-3eac-4dc9-af88-5bad7d4f541b"
-})
+﻿const Client = require('authy-client').Client;
+const authy = new Client({
+    key: '229D9wObUA8tWTVw6rDOeLqq15mQdgLU'
+});
+
+const enums = require('authy-client').enums;
 
 var hRegister = (function () {
-       console.log("================hRegister==================")
+    console.log("================hRegister==================")
     var _register = function (socket, data, conn) {
-        var sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
+        var sql = "INSERT INTO users (`phone`, `password`, `username`) VALUES(" + "0" + socket.phone + "," + data["pass"] + "," + "0" + socket.phone + ")";
         let addUser = (sql) => {
             return new Promise((resolve, reject) => {
                 conn.query(sql, function (err, rows) {
@@ -22,15 +24,56 @@ var hRegister = (function () {
                     }
                 });
             });
-        };        
+        };
         let Emit = async () => {
             await addUser(sql);
-            console.log("---------------------------");
+            console.log("-------------emit register to client--------------");
             socket.emit('return_register', {
                 success: true
             });
         };
+        Emit();
     };
+    // var _request = function (socket, data, conn) {
+    //     console.log("=========REQUEST =========");
+    //     console.log(socket.phone);
+    //     var is_success = false;
+    //     var sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
+    //     let checkUser = (sql) => {
+    //         return new Promise((resolve, reject) => {
+    //             conn.query(sql, function (err, rows) {
+    //                 if (err) {
+    //                     reject(err);
+    //                 }
+    //                 if (rows.length <= 0) {
+    //                     is_success = true;
+    //                     resolve("Success");
+    //                 } else {
+    //                     info = "This phone is already registered";
+    //                     reject(info);
+    //                 }
+    //             });
+    //         });
+    //     };
+    //     checkUser(sql).then(res => {
+    //         var verification = sinchClient.createSmsVerification("+84" + socket.phone);
+    //         verification.initiate().then(function (successInfo) {
+    //             console.log(successInfo +"");
+    //             // Act on success
+    //             // Display "enter pin" UI
+    //             socket.emit('return_verfication_code', {
+    //                 success: is_success
+    //             });
+    //             console.log("return_verfication_code Success");
+    //         }).fail(function (errorInfo) {
+    //             // Act on error
+    //             socket.emit('return_verfication_code', {
+    //                 success: is_success
+    //             });
+    //             console.log(errorInfo + "");
+    //         });
+    //     });
+    // }
     var _request = function (socket, data, conn) {
         console.log("=========REQUEST =========");
         console.log(socket.phone);
@@ -53,65 +96,43 @@ var hRegister = (function () {
             });
         };
         checkUser(sql).then(res => {
-            var verification = sinchClient.createSmsVerification("+84" + socket.phone);
-            verification.initiate().then(function (successInfo) {
-                // Act on success
-                // Display "enter pin" UI
-                socket.emit('return_verfication_code', {
-                    success: is_success
-                });
-                console.log("return_verfication_code Success");
-            }).fail(function (errorInfo) {
-                // Act on error
-                socket.emit('return_verfication_code', {
-                    success: is_success
-                });
-                console.log(errorInfo);
+            authy.startPhoneVerification({ countryCode: 'VN', locale: 'vn', phone: socket.phone, via: enums.verificationVia.SMS }, function (err, res) {
+                if (err) {
+                    socket.emit('return_verfication_code', {
+                        success: is_success
+                    });
+                } else {
+                    socket.emit('return_verfication_code', {
+                        success: is_success
+                    });
+                }
             });
-        })
+        });
+
     }
     var _respose = function (socket, data) {
         console.log("========== RESPOSE =========");
-        var verification = sinchClient.createSmsVerification("+84" + socket.phone);
         //PIN is retrieved from user
-        var code = data.code;
-        verification.verify(code).then(function (successInfo) {
-            console.log("return_verification Success");
-            socket.emit('return_verification', {
-                success: true,
-                code: data['code']
-            });
-            // Act on success (valid number)
-        }).fail(function (errorInfo) {
-            // Act on error and inform the user / retry
-            console.log(err)
-            socket.emit('return_verification', {
-                success: false
-            });
-        });
-    }
-    var _retry = function (socket, data) {
-        var verification = sinchClient.createSmsVerification("+84" + socket.phone);
-
-        //Re-send a verification code 
-        verification.retry().then(function () {
-            socket.emit('return_verification_code', {
-                success: true
-            });
-            //Ask user to enter secret CODE
-        }).fail(function (error) {
-            //Infom user of error sending SMS (more info in error.message)
-            socket.emit('return_verification_code', {
-                success: false
-            });
+        var code = data['code'];
+        authy.verifyPhone({ countryCode: 'VN', phone: socket.phone, token: code }, function (err, res) {
+            if (err) {
+                console.log(err)
+                socket.emit('return_verfication', {
+                    success: false
+                });
+            } else {
+                socket.emit('return_verfication', {
+                    success: true
+                    , code: code
+                });
+            }
         });
     }
 
     return {
-        register:_register,
+        register: _register,
         request: _request,
-        respose: _respose,
-        retry: _retry
+        respose: _respose
     };
 })();
 module.exports = hRegister;
