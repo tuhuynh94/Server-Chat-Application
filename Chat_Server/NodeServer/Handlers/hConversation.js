@@ -12,8 +12,17 @@ var conversation = (function () {
             }
         }
     }
-    
+
     var _leave_conversation = function (socket,data) {
+        var conversation = data["conversation"];
+        socket.broadcast.to(data['conversation_id']).emit('chat_message', {
+             type:"sys",
+             content:socket.username +" has left."
+        });
+        socket.leave(conversation);
+    }
+    
+    var _kick_user = function (socket,data) {
         var conversation = data["conversation"];
         socket.broadcast.to(data['conversation_id']).emit('chat_message', {
              type:"sys",

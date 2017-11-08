@@ -5,10 +5,11 @@ const authy = new Client({
 
 const enums = require('authy-client').enums;
 
-var hRegister = (function () {
-    console.log("================hRegister==================")
+var hRegister = (function () {   
     var _register = function (socket, data, conn) {
+         console.log("================hRegister==================")
         var sql = "INSERT INTO users (`phone`, `password`, `username`) VALUES(" + "0" + socket.phone + "," + data["pass"] + "," + "0" + socket.phone + ")";
+        console.log(sql);
         let addUser = (sql) => {
             return new Promise((resolve, reject) => {
                 conn.query(sql, function (err, rows) {
@@ -61,13 +62,13 @@ var hRegister = (function () {
     //             console.log(successInfo +"");
     //             // Act on success
     //             // Display "enter pin" UI
-    //             socket.emit('return_verfication_code', {
+    //             socket.emit('return_verification_code', {
     //                 success: is_success
     //             });
-    //             console.log("return_verfication_code Success");
+    //             console.log("return_verification_code Success");
     //         }).fail(function (errorInfo) {
     //             // Act on error
-    //             socket.emit('return_verfication_code', {
+    //             socket.emit('return_verification_code', {
     //                 success: is_success
     //             });
     //             console.log(errorInfo + "");
@@ -76,9 +77,10 @@ var hRegister = (function () {
     // }
     var _request = function (socket, data, conn) {
         console.log("=========REQUEST =========");
-        console.log(socket.phone);
+        
         var is_success = false;
         var sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
+        //console.log(sql);
         let checkUser = (sql) => {
             return new Promise((resolve, reject) => {
                 conn.query(sql, function (err, rows) {
@@ -87,41 +89,51 @@ var hRegister = (function () {
                     }
                     if (rows.length <= 0) {
                         is_success = true;
-                        resolve("Success");
+                        resolve(true);
                     } else {
                         info = "This phone is already registered";
-                        reject(info);
+                        resolve(false);
                     }
                 });
             });
         };
         checkUser(sql).then(res => {
-            authy.startPhoneVerification({ countryCode: 'VN', locale: 'vn', phone: socket.phone, via: enums.verificationVia.SMS }, function (err, res) {
-                if (err) {
-                    socket.emit('return_verfication_code', {
-                        success: is_success
-                    });
-                } else {
-                    socket.emit('return_verfication_code', {
-                        success: is_success
-                    });
-                }
-            });
+            if (res) {
+                authy.startPhoneVerification({ countryCode: 'VN', locale: 'vn', phone: socket.phone, via: enums.verificationVia.SMS }, function (err, res) {
+                    if (err) {
+                        console.log("GET CODE: ERROR - authy");
+                        socket.emit('return_verification_code', {
+                            success: is_success
+                        });
+                    } else {
+                        console.log("GET CODE: success");
+                        socket.emit('return_verification_code', {
+                            success: is_success
+                        });
+                    }
+                });
+            } else {
+                console.log("GET CODE: ERROR - REGISTED");
+                socket.emit('return_verification_code', {
+                    success: is_success
+                });
+            }
         });
 
     }
-    var _respose = function (socket, data) {
-        console.log("========== RESPOSE =========");
+    var _response = function (socket, data) {
+        // console.log("========== RESPONSE =========");
         //PIN is retrieved from user
         var code = data['code'];
+         console.log("========== RESPONSE ========= " + code);
         authy.verifyPhone({ countryCode: 'VN', phone: socket.phone, token: code }, function (err, res) {
             if (err) {
                 console.log(err)
-                socket.emit('return_verfication', {
+                socket.emit('return_verification', {
                     success: false
                 });
             } else {
-                socket.emit('return_verfication', {
+                socket.emit('return_verification', {
                     success: true
                     , code: code
                 });
@@ -132,7 +144,7 @@ var hRegister = (function () {
     return {
         register: _register,
         request: _request,
-        respose: _respose
+        response: _response
     };
 })();
 module.exports = hRegister;

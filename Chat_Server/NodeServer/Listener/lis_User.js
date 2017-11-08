@@ -8,8 +8,8 @@ exports = module.exports = function(io,socket,connection){
         hRegister.request(socket, data,connection);
     });
     //-------------------- sent verification code to verification
-    socket.on('respose', function (data) {
-        hRegister.respose(socket, data);
+    socket.on('response', function (data) {
+        hRegister.response(socket, data);
     });
     //-------------------- register
     socket.on('register', function (data) {

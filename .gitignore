@@ -59,3 +59,4 @@ typings/
 
 Chat_Server/.vscode/tasks.json
 Chat_Server/.vscode/launch.json
+Chat_Server/NodeServer/package-lock.json
