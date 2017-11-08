@@ -5,6 +5,7 @@ var hChat = (function () {
         console.log("========== send message =========");
         // io.sockets.connected[data.name].emit('send_msg', {content: data.content, client_id: socket.id});                
         socket.broadcast.to(data['conversation_id']).emit('chat_message', {
+             type:"chat",
              content:data["msg"], 
              creator:socket.phone,
              created_at: data["create_at"],
