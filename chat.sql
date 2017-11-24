@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 26, 2017 lúc 10:56 AM
+-- Thời gian đã tạo: Th10 24, 2017 lúc 11:08 AM
 -- Phiên bản máy phục vụ: 10.1.25-MariaDB
 -- Phiên bản PHP: 5.6.31
 
@@ -44,13 +44,8 @@ CREATE TABLE `conversations` (
 
 INSERT INTO `conversations` (`conversation_id`, `conversation_name`, `member`, `creator`, `created_at`, `updated_at`, `type`) VALUES
 (1, '123', '1,2,3', '1', '2017-10-18 00:00:00', '2017-10-24 09:16:37', 0),
-(2, NULL, '', '', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0),
-(3, '123', '1,2,3', '11', '2017-10-24 09:22:26', '2017-10-24 09:22:26', 0),
-(4, '123', '1,2,3', '11', '2017-10-24 09:23:07', '2017-10-24 09:23:07', 0),
-(5, '123', '1,2,3', '11', '2017-10-24 09:29:02', '2017-10-24 09:29:02', 0),
-(6, '123', '1,2,3', '11', '2017-10-24 09:37:13', '2017-10-24 09:37:13', 0),
-(7, '123', '1,2,3', '11', '2017-10-24 09:41:47', '2017-10-24 09:41:47', 0),
-(8, '123', '1,2,3', '11', '2017-10-24 09:41:56', '2017-10-24 09:41:56', 0);
+(2, '123', '1,2', '2', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0),
+(3, '123', '1,2,3', '11', '2017-10-24 09:22:26', '2017-10-24 09:22:26', 0);
 
 -- --------------------------------------------------------
 
@@ -59,6 +54,7 @@ INSERT INTO `conversations` (`conversation_id`, `conversation_name`, `member`, `
 --
 
 CREATE TABLE `friends` (
+  `id` int(11) NOT NULL,
   `phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `friend_phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -71,11 +67,12 @@ CREATE TABLE `friends` (
 -- Đang đổ dữ liệu cho bảng `friends`
 --
 
-INSERT INTO `friends` (`phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`) VALUES
-('01685574968', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
-('01685574969', '01685574968', '', '2017-10-08', '', '2017-09-11 00:00:00'),
-('1', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
-('1', '01685574968', '', '2017-10-01', '', '2017-09-11 00:00:00');
+INSERT INTO `friends` (`id`, `phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`) VALUES
+(1, '01685574968', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
+(2, '01685574969', '01685574968', '', '2017-10-08', '', '2017-09-11 00:00:00'),
+(3, '1', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
+(4, '1', '01685574968', '', '2017-10-01', '', '2017-09-11 00:00:00'),
+(6, '1', '2', '', '0000-00-00', '', '2017-11-24 15:10:06');
 
 -- --------------------------------------------------------
 
@@ -87,17 +84,18 @@ CREATE TABLE `invite_friend` (
   `from_phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `from_user` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `to_phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-  `invited_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `invited_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `invite_friend`
 --
 
-INSERT INTO `invite_friend` (`from_phone`, `from_user`, `to_phone`, `invited_at`) VALUES
-('1', '', '1', '2017-09-18 00:00:00'),
-('1', '', '2', '2017-09-28 10:26:27'),
-('2', '', '1', '2017-10-18 00:00:00');
+INSERT INTO `invite_friend` (`from_phone`, `from_user`, `to_phone`, `invited_at`, `status`) VALUES
+('1', '', '1', '2017-09-18 00:00:00', 0),
+('1', '', '2', '2017-09-28 10:26:27', 0),
+('2', '', '1', '2017-10-18 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -120,7 +118,14 @@ CREATE TABLE `messages` (
 
 INSERT INTO `messages` (`message_id`, `conversation_id`, `creator`, `message`, `created_at`, `is_send`) VALUES
 (1, 1, '1', 'dsfsdfsdf', '2017-10-19 00:00:00', 1),
-(2, 1, '1', 'qưeqweqwwe', '2017-10-19 00:00:00', 1);
+(2, 1, '1', 'qưeqweqwwe', '2017-10-19 00:00:00', 1),
+(3, 1, '1', '123321123', '2017-11-02 23:57:16', 0),
+(4, 1, '1', 'hihi', '2017-11-03 00:02:25', 0),
+(5, 1, '1', '123321', '2017-11-03 00:13:29', 0),
+(6, 1, '1', 'huhu', '2017-11-03 00:15:01', 0),
+(7, 1, '1', '123321', '2017-11-03 00:17:53', 0),
+(8, 1, '1', '123321123321123321', '2017-11-03 00:19:19', 0),
+(9, 1, '1', '123321123321123321', '2017-11-03 00:24:38', 0);
 
 -- --------------------------------------------------------
 
@@ -157,9 +162,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`phone`, `password`, `username`, `image_source`, `status`, `birthday`, `email`, `conversations`) VALUES
-('1', '1', 'user2', '', '', '0000-00-00', NULL, '1,2'),
-('123123123123', '1', 'user1', '', '', '2017-10-01', NULL, '1'),
-('4', '1', 'user1', '', '', '0000-00-00', NULL, '');
+('1', '1', '2', '', '', '0000-00-00', NULL, '1,2,'),
+('123123123123', '1', 'user1', '', '', '2017-10-01', NULL, '1,'),
+('1685574968', '123321', '1685574968', '', '', '1990-01-01', NULL, ''),
+('2', '1', '1', '', '', '0000-00-00', NULL, '1,2,');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -175,7 +181,7 @@ ALTER TABLE `conversations`
 -- Chỉ mục cho bảng `friends`
 --
 ALTER TABLE `friends`
-  ADD PRIMARY KEY (`phone`,`friend_phone`);
+  ADD PRIMARY KEY (`id`,`phone`,`friend_phone`);
 
 --
 -- Chỉ mục cho bảng `invite_friend`
@@ -209,12 +215,17 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT cho bảng `friends`
+--
+ALTER TABLE `friends`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT cho bảng `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;COMMIT;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
