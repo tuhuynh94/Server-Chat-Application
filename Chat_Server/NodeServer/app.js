@@ -24,16 +24,21 @@ setTimeout(function(){
     console.log("all messages ----"+ db.messages().length);
 },1000);
 
-io.on('connection',function(socket){
-    //console.log(socket.client.conn.id + ", ip : " + socket.handshake.address);
-    console.log(">>>>>>>>>> Join <<<<<<<<<");
+var lst_online_user = {};
 
-    socket.on('connect_to_server', function (data) {        
-        console.log("connected devices");
-        hUser.connect(socket,data);
+io.on('connection',function(socket){
+    console.log("connect to node server");
+
+    socket.on('login', function (data) {
+        hUser.connect(socket, data, lst_online_user);
     });
-    var friends = require('./Listener/lis_Friend')(io,socket,connection);
-    var user = require('./Listener/lis_User')(io, socket, connection);
-    var conversation = require('./Listener/lis_Conversation')(io, socket, connection);
-    var chat = require('./Listener/lis_Chat')(io, socket, connection);
+
+    socket.on('disconnect',function() {
+        hUser.disconnect(socket, lst_online_user);
+    });
+
+    var friends = require('./Listener/lis_Friend')(io,socket,connection, lst_online_user);
+    var user = require('./Listener/lis_User')(io, socket, connection, lst_online_user);
+    var conversation = require('./Listener/lis_Conversation')(io, socket, connection, lst_online_user);
+    var chat = require('./Listener/lis_Chat')(io, socket, connection, lst_online_user);
 });

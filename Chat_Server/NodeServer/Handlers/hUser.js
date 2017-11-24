@@ -1,18 +1,46 @@
-var hFriend = require('./hFriend');
-var db = require('../Models/database');
+
+let db = require('../Models/database');
  
-var hUser = (function () {
-     console.log("================hUser==================")
-    var _connect = function(socket,data){
+let hUser = (() =>{
+    let _connect = (socket,data,lst_online_user)=>{        
+        console.log("------------login success connect to node server-------------");
         socket.phone = data["phone"];
         socket.username = data["username"];
         socket.birthday = data["birthday"];
+        console.log("SOCKET.PHONE "+ socket.phone + "--------SOCKET.USERNAME " + socket.username + " ");     
+
+        //console.log("========== _load_friends =========");
+        //socket.friends = db.friends().filter(f => f.phone == socket.phone || f.friend_phone == socket.phone);
+        //console.log(socket.friends.length);
+
+        //socket.conversations = [];
+        //let conversation_id = data['conversation_id'].split(',');
+        //for (let i = 0; i < conversation_id.length; i++) {
+        //    if (conversation_id[i] != '') {
+        //        socket.conversations.push(db.conversations().filter(f => f.conversation_id === conversation_id[i].conversation_id));
+        //        socket.join(conversation_id[i]);
+        //        console.log("Join room " + conversation_id[i]);
+        //    }
+        //}           
+
+        let c_socket = lst_online_user[socket.username];
+        if ( c_socket== null || typeof(c_socket) == 'undefined') {
+            lst_online_user[socket.username] = socket.id;    
+            //TODO: broacash to all friend to update status after friend update
+        }       
+        // REVIEW: multi device with a user
+        
+    }
+    let _disconnect = (socket,data,lst_online_user)=>{        
+        console.log("================disconnect==================");
+        delete lst_online_user[username];
     }
 
-    // var _login = function (socket, data,conn) {
+
+    // let _login =  (socket, data,conn) {
     //     console.log("========== login =========");
-    //     var sql = "SELECT `phone`, `username`, `email`, `birthday` FROM `users` WHERE `phone` = '"+data['username']+"' OR `username` = '"+ data['username']+"' AND `password` = '1' ;";
-    //     conn.query(sql, function (err, rows) {
+    //     let sql = "SELECT `phone`, `username`, `email`, `birthday` FROM `users` WHERE `phone` = '"+data['username']+"' OR `username` = '"+ data['username']+"' AND `password` = '1' ;";
+    //     conn.query(sql,  (err, rows) {
     //         if (typeof (rows.length) != "undefined" && rows.length >0) {
     //             socket.emit('return_login',{
     //                 success: true
@@ -32,9 +60,9 @@ var hUser = (function () {
     //     });
     // };
 
-    // var _updateInfo = function (socket, data) {
-    //     var sql = "UPDATE `users` SET `password` = '"+data["pass"]+"', `password` = '"+data["pass"]+"', `birthday` = '"+data["pass"]+"', `email` = '"+data["pass"]+"' WHERE `phone` = '"+socket.phone+"';";
-    //        conn.query(sql, function(err,rows){
+    // let _updateInfo =  (socket, data) {
+    //     let sql = "UPDATE `users` SET `password` = '"+data["pass"]+"', `password` = '"+data["pass"]+"', `birthday` = '"+data["pass"]+"', `email` = '"+data["pass"]+"' WHERE `phone` = '"+socket.phone+"';";
+    //        conn.query(sql, (err,rows){
     //            if (err) {
     //                 console.log(err);
     //                 socket.emit('return_update_user',{
@@ -52,6 +80,7 @@ var hUser = (function () {
 
     return{
         connect:_connect
+        ,disconnect:_disconnect
         // login:_login,
         // , updateInfo: _updateInfo
     };

@@ -2,7 +2,7 @@
 
 var hChat = require('../Handlers/hChat');
 
-exports = module.exports = function(io,socket,connection){
+exports = module.exports = (io,socket,connection, lst_online_user)=>{
      //-------------------- send_msg
     socket.on('send_msg', function (data) {
         hChat.send_msg(io,socket,data);

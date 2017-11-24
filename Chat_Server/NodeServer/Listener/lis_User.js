@@ -1,7 +1,8 @@
 
 var hRegister = require('../Handlers/hRegister');
+let hUser = require('../Handlers/hUser');
 
-exports = module.exports = function(io,socket,connection){
+exports = module.exports = (io,socket,connection, lst_online_user) =>{
         //-------------------- sent request to get verification code
     socket.on('request', function (data) {
         socket.phone = data["phone"];
@@ -18,8 +19,8 @@ exports = module.exports = function(io,socket,connection){
     });
     //-------------------- login
     socket.on('login', function (data) {
-        console.log("----------------- user login --------------");
-        hUser.login(socket, data, connection);
+        console.log("----------------- user login --------------");        
+        hUser.connect(socket, data, connection);
     });
     //-------------------- forgot_pass
     socket.on('forgot_pass', function (data) {

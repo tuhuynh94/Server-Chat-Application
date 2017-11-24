@@ -1,103 +1,108 @@
-var db = require('../Models/database');
-//var query = require('');
+let db = require('../Models/database');
+let mInvitation = require('../Models/mInvitation');
+//let query = require('');
 
-var hFriend = (function () {
+let hFriend = (()=> {
 
-    var _load_friends = function (socket) {
+    //DONE
+    let _load_friends =  (socket)=> {
         console.log("========== _load_friends =========");
         socket.friends = db.friends().filter(f => f.phone == socket.phone || f.friend_phone == socket.phone);
         console.log(socket.friends.length);
+
     };
 
-    var _request_add_friend = function (io, socket, data, conn) {
+    //check
+    let _request_add_friend =  (io, socket, data, conn, lst_online_user)=> {
         console.log("========== _response_add_friend =========");
-        var sentTo = data['other_phone'];
-        var otherSocket = io.sockets.sockets[sentTo];
-        //var other_phone = query.FindInfor(other);
+        let sentTo = data['other_phone'];
+        let other_socket_id = lst_online_user[sentTo];
+        let otherSocket = null;
 
-        if (typeof (otherSocket) == 'undefined') {
-            var sql = "INSERT INTO `invite_friend` (`from_phone`, `to_phone`, `invited_at`) VALUES ('" + socket.phone + "', '" + other_phone + "', '');";
-            conn.query(sql, function (err, rows) {
-                console.log("catch----: " + err);
-            });
-        } else {
-            io.sockets.connected[otherSocket].emit('return_invite_friend', {
+        if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
+            otherSocket = io.sockets.sockets[other_socket_id];
+            io.sockets.connected[otherSocket].emit('invite_friend', {
                 from: socket.phone,
                 from_username: socket.username,
-                birthday: socket.birthday,
-                to: sentTo,
             });
+
+        } else {    
+            //await mInvitation.add_invitation(conn,socket.phone,socket.username,sentTo);
+            mInvitation.add_invitation(conn,socket.phone,socket.username,sentTo);
         }
     };
-
-    var _response_add_friend = function (io, socket, data) {
+    //check
+    let _response_add_friend =  (io, socket, data, lst_online_user,conn)=> {
         console.log("========== _response_add_friend =========");
-        var from = data['other_phone'];
-        var otherSocket = io.sockets.sockets[from];
-        if (data['is_accept']) {
-            io.sockets.connected[otherSocket].emit('return_response_invite_friend', {
-                is_accept: true,
-                from: socket.phone,
-                from_username: socket.username,
-                birthday: socket.birthday,
-                to: sentTo,
-            });
-
-            socket.friends.push({
-                email: data["email"],
-                birthday: data["birthday"],
-                username: data["username"],
-                add_at: data["add_at"],
-                phone: socket.phone,
-                friend_phone: from
-            });
-
-        } else {
-            io.sockets.connected[otherSocket].emit('return_response_invite_friend', {
-                is_accept: false,
-                from: socket.phone,
-                from_username: socket.username,
-                birthday: socket.birthday,
-                to: sentTo,
-            });
+        let from = data['other_phone'];
+        let other_socket_id = lst_online_user[lst_online_user];
+        let is_accept = data['is_accept'];
+        //online
+        if (other_socket_id != null || typeof (other_socket_id) != 'undefined') {
+            let otherSocket = io.sockets.connected[other_socket_id];
+            if (is_accept) {
+                otherSocket.emit('return_response_invite_friend', {
+                    is_accept: true,
+                    from: socket.phone,
+                    from_username: socket.username,
+                    birthday: socket.birthday,
+                    to: sentTo,
+                });
+                socket.friends.push({
+                    email: data["email"],
+                    birthday: data["birthday"],
+                    username: data["username"],
+                    add_at: data["add_at"],
+                    phone: socket.phone,
+                    friend_phone: from
+                });
+            } else {
+                otherSocket.emit('return_response_invite_friend', {
+                    is_accept: false
+                });
+            }
+        } else {//offline save in database
+            // await mInvitation.update_invitation(conn,from.socket.phone,is_accept?1:0);
+            mInvitation.update_invitation(conn,from.socket.phone,is_accept?1:0);
         }
-    };
 
-    var _update_add_friend = function (socket, data) {
-         socket.friends.push({
-                email: data["email"],
-                birthday: data["birthday"],
-                username: data["username"],
-                add_at: data["add_at"],
-                phone: socket.phone,
-                friend_phone: data["other_phone"]
-            });
+    };
+    //check
+    let _update_add_friend =  (socket, data)=> {
+        socket.friends.push({
+            email: data["email"],
+            birthday: data["birthday"],
+            username: data["username"],
+            add_at: data["add_at"],
+            phone: socket.phone,
+            friend_phone: data["other_phone"]
+        });
     }
-
-    var _unfriend = function (socket, data) {
+    //check
+    let _unfriend =  (io,socket, data,lst_online_user)=> {
         console.log("========= recieve ========")
-        var flat = data["flat"];
-        var other_phone = data["other_phone"];
+        let flat = data["flat"];
+        let other_phone = data["other_phone"];
 
-        var otherSocket = io.sockets.sockets[other_phone];
+        let otherSocket = io.sockets.sockets[other_phone];
 
         if (flat) {
-            io.sockets.connected[otherSocket].emit('unfriend', {
+            io.sockets.connected[otherSocket].emit('un_friend', {
                 friend_phone: socket.phone,
-                friend_name: socket.username,
-                flat: false
+                friend_name: socket.username
             })
         }
 
-        var index = socket.friends.indexOf(f => f.phone == socket.phone || f.friend_phone == other_phone);
+        let index = socket.friends.indexOf(f => f.phone == socket.phone || f.friend_phone == other_phone);
         socket.friends.splice(index, 1);
     }
 
     return {
         load_friends: _load_friends,
-        request_add_friend: _request_add_friend
-        ,response_add_friend: _response_add_friend
-        ,unfriend: _unfriend
+        request_add_friend: _request_add_friend,
+        response_add_friend: _response_add_friend,
+        update_add_friend:_update_add_friend,
+        unfriend: _unfriend
     };
 
 })();

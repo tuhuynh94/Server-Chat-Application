@@ -1,7 +1,7 @@
 
-var hChat = (function () {
+let hChat = (() =>{
 
-    var _send_msg = function (io, socket, data) {
+    let _send_msg =  (io, socket, data)=> {
         console.log("========== send message =========");
         // io.sockets.connected[data.name].emit('send_msg', {content: data.content, client_id: socket.id});                
         io.to(data['conversation_id']).emit('receive_message', {
@@ -16,16 +16,16 @@ var hChat = (function () {
         );
     };
 
-    var _edit_msg = function (socket, data) {
+    let _edit_msg =  (socket, data)=> {
         console.log("========== edit message =========");
 
     };
-    var _del_msg = function (socket, data) {
+    let _del_msg =  (socket, data) =>{
         console.log("========== edit message =========");
 
     };
 
-    var _send_group_msg = (socket, data) => {
+    let _send_group_msg = (socket, data) => {
         console.log("========== send group message =========");
         io.sockets.in(socket.room).emit("send_group_msg", {content : data.content, client_id: socket.id})
     }

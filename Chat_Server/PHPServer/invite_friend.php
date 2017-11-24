@@ -15,7 +15,7 @@ $conn->set_charset("utf8");
 
 $phone = $_POST["phone"];
 
-$sql = "SELECT from_phone,from_user, to_phone, invited_at FROM invite_friend WHERE to_phone = '" . $phone . "'";
+$sql = "SELECT from_phone,from_user, to_phone, invited_at,status FROM invite_friend WHERE to_phone = '" . $phone . "'";
 $result = $conn->query($sql);
 
 $jsonData = mysqli_fetch_all($result, MYSQLI_ASSOC);

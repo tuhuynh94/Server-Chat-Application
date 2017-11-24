@@ -54,7 +54,7 @@
     <Compile Include="Models\database.js" />
     <Compile Include="Models\mConversations.js" />
     <Compile Include="Models\mFriends.js" />
-    <Compile Include="Models\mInvite_friends.js" />
+    <Compile Include="Models\mInvitation.js" />
     <Compile Include="Models\mMessages.js" />
     <Compile Include="Models\mMessage_seen.js" />
     <Compile Include="Models\mUsers.js" />

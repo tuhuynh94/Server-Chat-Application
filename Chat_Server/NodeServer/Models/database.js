@@ -34,8 +34,8 @@ mMessage_seen.loadAll(connection, function (cb_result) {
 });
 
 var m_lst_invite_friends = [];
-var mInvite_friends = require('../Models/mInvite_friends');
-mInvite_friends.loadAll(connection, function (cb_result) {
+var mInvitation = require('../Models/mInvitation');
+mInvitation.loadAll(connection, function (cb_result) {
     m_lst_invite_friends = cb_result;
 });
 

@@ -1,11 +1,11 @@
-var db = require('../Models/database');
+let db = require('../Models/database');
 
-var conversation = (function () {
+let conversation = (() =>{
     //Done
-    var _load_conversation = function (socket, data) {
+    let _load_conversation =  (socket, data) =>{
         socket.conversations = [];
-        var conversation_id = data['conversation_id'].split(',');
-        for (var i = 0; i < conversation_id.length; i++) {
+        let conversation_id = data['conversation_id'].split(',');
+        for (let i = 0; i < conversation_id.length; i++) {
             if (conversation_id[i] != '') {
                 socket.conversations.push(db.conversations().filter(f => f.conversation_id === conversation_id[i].conversation_id));
                 socket.join(conversation_id[i]);
@@ -13,11 +13,31 @@ var conversation = (function () {
             }
         }
     };
+    //check
+    let _add_conversation =  (io,socket,data, lst_online_user) =>{
+       //socket.conversations.push[{conversation_id:data["conversation_id"]}];
+        let conversation_id = data["conversation_id"];
+        let conversation_name = data["conversation_name"];
 
-    var _add_member = function (io,socket,data) {
-        var conversation_id = data["conversation_id"];
-        var username = data["username"];
-        var other_socket =  io.sockets.connected[data["other_phone"]];
+       let members = data["member"].split(',');
+       for (let index = 0; index < members.length-1; index++) {
+           let i_socket = io.socket.connected[lst_online_user[members[index]]];
+           if (i_socket != null && typeof(i_socket) != 'undefined') {
+               i_socket.join(conversation_id);
+               i_socket.conversations.push({conversation_id:conversation_id, conversation_name:conversation_name}); // add new conversation to socket
+               i_socket.emit("r_add_conversation",{
+                   conversation_id:conversation_id 
+                   ,owner:socket.username
+                   ,conversation_name:conversation_name
+                });
+           }
+       }
+    }
+
+    let _add_member =  (io,socket,data)=> {
+        let conversation_id = data["conversation_id"];
+        let username = data["username"];
+        let other_socket =  io.sockets.connected[data["other_phone"]];
 
        other_socket.join(conversation_id);
         socket.broadcast.to(data['conversation_id']).emit('return_add_new_mem', {
@@ -35,8 +55,8 @@ var conversation = (function () {
         // });
     }
     
-    var _leave_conversation = function (socket,data) {
-        var conversation = data["conversation"];
+    let _leave_conversation =  (socket,data)=> {
+        let conversation = data["conversation"];
         socket.broadcast.to(data['conversation_id']).emit('chat_message', {
              type:"sys",
              content:socket.username +" has left."
@@ -44,34 +64,14 @@ var conversation = (function () {
         socket.leave(conversation);
     }
     //F
-    var _kick_user = function (socket,data) {
-        var conversation = data["conversation"];
+    let _kick_user =  (socket,data)=> {
+        let conversation = data["conversation"];
         socket.broadcast.to(data['conversation_id']).emit('chat_message', {
              type:"sys",
              content:socket.username +" has left."
         });
         socket.leave(conversation);
-    }
-    //check
-    var _add_conversation = function (io,socket,data) {
-       //socket.conversations.push[{conversation_id:data["conversation_id"]}];
-        var conversation_id = data["conversation_id"];
-        var conversation_name = data["conversation_name"];
-
-       var members = data["member"].split(',');
-       for (var index = 0; index < members.length-1; index++) {
-           var i_socket = io.socket.connected[members[i]];
-           if (i_socket != null && typeof(i_socket) != 'undefined') {
-               i_socket.join(conversation_id);
-               i_socket.conversations.push({conversation_id:conversation_id, conversation_name:conversation_name}); // add new conversation to socket
-               i_socket.emit("r_add_conversation",{
-                   conversation_id:conversation_id 
-                   ,owner:socket.username
-                   ,conversation_name:conversation_name
-                });
-           }
-       }
-    }
+    }  
 
     return{
         add_conversation:_add_conversation,

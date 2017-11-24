@@ -5,14 +5,14 @@ const authy = new Client({
 
 const enums = require('authy-client').enums;
 
-var hRegister = (function () {   
-    var _register = function (socket, data, conn) {
+let hRegister = (  () =>{   
+    let _register =   (socket, data, conn) =>{
          console.log("================hRegister==================")
-        var sql = "INSERT INTO users (`phone`, `password`, `username`) VALUES(" + "0" + socket.phone + "," + data["pass"] + "," + "0" + socket.phone + ")";
+        let sql = "INSERT INTO users (`phone`, `password`, `username`) VALUES(" + "0" + socket.phone + "," + data["pass"] + "," + "0" + socket.phone + ")";
         console.log(sql);
         let addUser = (sql) => {
             return new Promise((resolve, reject) => {
-                conn.query(sql, function (err, rows) {
+                conn.query(sql,function (err, rows) {
                     if (err) {
                         info = err;
                         flat = false;
@@ -35,14 +35,14 @@ var hRegister = (function () {
         };
         Emit();
     };
-    // var _request = function (socket, data, conn) {
+    // let _request =   (socket, data, conn) {
     //     console.log("=========REQUEST =========");
     //     console.log(socket.phone);
-    //     var is_success = false;
-    //     var sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
+    //     let is_success = false;
+    //     let sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
     //     let checkUser = (sql) => {
     //         return new Promise((resolve, reject) => {
-    //             conn.query(sql, function (err, rows) {
+    //             conn.query(sql,   (err, rows) {
     //                 if (err) {
     //                     reject(err);
     //                 }
@@ -57,8 +57,8 @@ var hRegister = (function () {
     //         });
     //     };
     //     checkUser(sql).then(res => {
-    //         var verification = sinchClient.createSmsVerification("+84" + socket.phone);
-    //         verification.initiate().then(function (successInfo) {
+    //         let verification = sinchClient.createSmsVerification("+84" + socket.phone);
+    //         verification.initiate().then(  (successInfo) {
     //             console.log(successInfo +"");
     //             // Act on success
     //             // Display "enter pin" UI
@@ -66,7 +66,7 @@ var hRegister = (function () {
     //                 success: is_success
     //             });
     //             console.log("return_verification_code Success");
-    //         }).fail(function (errorInfo) {
+    //         }).fail(  (errorInfo) {
     //             // Act on error
     //             socket.emit('return_verification_code', {
     //                 success: is_success
@@ -75,16 +75,16 @@ var hRegister = (function () {
     //         });
     //     });
     // }
-    var _request = function (socket, data, conn) {
+    let _request =   (socket, data, conn) =>{
         console.log("=========REQUEST =========");
         
-        var is_success = false;
-        var info;
-        var sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
+        let is_success = false;
+        let info;
+        let sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
         //console.log(sql);
         let checkUser = (sql) => {
             return new Promise((resolve, reject) => {
-                conn.query(sql, function (err, rows) {
+                conn.query(sql,function(err, rows) {
                     if (err) {
                         reject(err);
                     }
@@ -99,7 +99,7 @@ var hRegister = (function () {
         };
         checkUser(sql).then(res => {
             if (res) {
-                authy.startPhoneVerification({ countryCode: 'VN', locale: 'vn', phone: socket.phone, via: enums.verificationVia.SMS }, function (err, res) {
+                authy.startPhoneVerification({ countryCode: 'VN', locale: 'vn', phone: socket.phone, via: enums.verificationVia.SMS },function (err, res) {
                     if (err) {
                         console.log("GET CODE: ERROR - authy");
                         socket.emit('return_verification_code', {
@@ -123,10 +123,10 @@ var hRegister = (function () {
         });
 
     }
-    var _response = function (socket, data) {
+    let _response =   (socket, data)=> {
         // console.log("========== RESPONSE =========");
         //PIN is retrieved from user
-        var code = data['code'];
+        let code = data['code'];
          console.log("========== RESPONSE ========= " + code);
         authy.verifyPhone({ countryCode: 'VN', phone: socket.phone, token: code }, function (err, res) {
             if (err) {
