@@ -79,6 +79,7 @@ var hRegister = (function () {
         console.log("=========REQUEST =========");
         
         var is_success = false;
+        var info;
         var sql = "SELECT `phone` FROM `users` WHERE `phone` = '" + socket.phone + "';";
         //console.log(sql);
         let checkUser = (sql) => {
@@ -88,7 +89,6 @@ var hRegister = (function () {
                         reject(err);
                     }
                     if (rows.length <= 0) {
-                        is_success = true;
                         resolve(true);
                     } else {
                         info = "This phone is already registered";
@@ -103,19 +103,21 @@ var hRegister = (function () {
                     if (err) {
                         console.log("GET CODE: ERROR - authy");
                         socket.emit('return_verification_code', {
-                            success: is_success
+                            success: false,
+                            info : err + ""
                         });
                     } else {
                         console.log("GET CODE: success");
                         socket.emit('return_verification_code', {
-                            success: is_success
+                            success: true,
                         });
                     }
                 });
             } else {
                 console.log("GET CODE: ERROR - REGISTED");
                 socket.emit('return_verification_code', {
-                    success: is_success
+                    success: false,
+                    info : info
                 });
             }
         });

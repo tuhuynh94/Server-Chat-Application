@@ -1,7 +1,7 @@
 var db = require('../Models/database');
 
 var conversation = (function () {
-    var _load_conversation = function (socket, data) {
+    var _load_conversation = function (io,socket, data) {
         socket.conversations = [];
         var conversation_id = data['conversation_id'].split(',');
         for (var i = 0; i < conversation_id.length; i++) {
