@@ -38,7 +38,7 @@ let hFriend = (()=> {
         let other_socket_id = lst_online_user[lst_online_user];
         let is_accept = data['is_accept'];
         //online
-        if (other_socket_id != null || typeof (other_socket_id) != 'undefined') {
+        if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
             let otherSocket = io.sockets.connected[other_socket_id];
             if (is_accept) {
                 otherSocket.emit('return_response_invite_friend', {
@@ -84,15 +84,17 @@ let hFriend = (()=> {
         let flat = data["flat"];
         let other_phone = data["other_phone"];
 
-        let otherSocket = io.sockets.sockets[other_phone];
-
-        if (flat) {
-            io.sockets.connected[otherSocket].emit('un_friend', {
-                friend_phone: socket.phone,
-                friend_name: socket.username
-            })
+        let other_socket_id = lst_online_user[other_phone];
+        if (other_socket_id != null && typeof(other_socket_id)!= 'undefined') {            
+            if (flat) {
+                io.sockets.connected[otherSocket].emit('un_friend', {
+                    friend_phone: socket.phone,
+                    friend_name: socket.username
+                });
+            }
+        } else {
+            //NO IDEAL
         }
-
         let index = socket.friends.indexOf(f => f.phone == socket.phone || f.friend_phone == other_phone);
         socket.friends.splice(index, 1);
     }

@@ -23,17 +23,17 @@ let hUser = (() =>{
         //    }
         //}           
 
-        let c_socket = lst_online_user[socket.username];
-        if ( c_socket== null || typeof(c_socket) == 'undefined') {
-            lst_online_user[socket.username] = socket.id;    
+        let c_socket = lst_online_user[socket.phone];
+        if ( typeof(c_socket) == 'undefined') {
+            lst_online_user[socket.phone] = socket.id;    
             //TODO: broacash to all friend to update status after friend update
         }       
         // REVIEW: multi device with a user
         
     }
-    let _disconnect = (socket,data,lst_online_user)=>{        
+    let _before_disconnect = (socket,data,lst_online_user)=>{        
         console.log("================disconnect==================");
-        delete lst_online_user[username];
+        delete lst_online_user[socket.phone];
     }
 
 
@@ -80,7 +80,7 @@ let hUser = (() =>{
 
     return{
         connect:_connect
-        ,disconnect:_disconnect
+        , before_disconnect: _before_disconnect
         // login:_login,
         // , updateInfo: _updateInfo
     };

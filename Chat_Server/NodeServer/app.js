@@ -27,15 +27,12 @@ setTimeout(function(){
 var lst_online_user = {};
 
 io.on('connection',function(socket){
-    console.log("connect to node server");
-
-    socket.on('login', function (data) {
-        hUser.connect(socket, data, lst_online_user);
+    socket.on('disconnect', function () {
+        console(socket.phone +" IS DISCONNECT." )
     });
-
-    socket.on('disconnect',function() {
-        hUser.disconnect(socket, lst_online_user);
-    });
+    socket.on('before_disconnect', function () {
+        hUser.before_disconnect(socket, lst_online_user);
+    })
 
     var friends = require('./Listener/lis_Friend')(io,socket,connection, lst_online_user);
     var user = require('./Listener/lis_User')(io, socket, connection, lst_online_user);
