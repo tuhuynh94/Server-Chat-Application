@@ -14,9 +14,8 @@ let mInvitation = (() =>{
         });
     };
 
-    let _update_invitation = (conn,from,to,status) => {
-        let sql = "UPDATE invite_friend SET status ="+status
-         + " WHERE from_phone = '" + from + "' AND to_phone = '"+to+"'";        
+    let _del_invitation = (conn,from,to,status) => {
+        let sql = "DELETE invite_friend  WHERE from_phone = '" + from + "' AND to_phone = '"+to+"'";        
         conn.query(sql, function (err, rows) {
             if (err != null) {
                 console.log("_update user fail");
@@ -41,7 +40,7 @@ let mInvitation = (() =>{
 
     return{
         loadAll: _loadAll
-        , update_invitation:_update_invitation
+        , del_invitation:_del_invitation
         ,add_invitation : _add_invitation
     }
 

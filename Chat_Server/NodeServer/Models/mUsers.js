@@ -1,19 +1,18 @@
-var mUsers = (function(){
-    var _loadAll = function(conn, callback){
-        var sql = "SELECT * FROM users";
-        var results = [];
+let mUsers = (()=>{
+    let _loadAll = (conn, callback)=>{
+        let sql = "SELECT * FROM users";
+        let results = [];
         conn.query(sql, function(err,rows){
             if(err){
                 callback(results);
                 throw err;                
             }
             else{
-                var results = JSON.parse(JSON.stringify(rows));
+                let results = JSON.parse(JSON.stringify(rows));
                 callback(results);
             }
         });
     };
-
 
     return{
         loadAll: _loadAll

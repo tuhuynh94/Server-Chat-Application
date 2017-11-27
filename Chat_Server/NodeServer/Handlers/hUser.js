@@ -5,6 +5,7 @@ let hFriend = require('../Handlers/hFriend');
 let hUser = (() =>{
     let _connect = (socket,data,lst_online_user)=>{        
         console.log("------------login success connect to node server-------------");
+        
         socket.phone = data["phone"];
         socket.username = data["username"];
         socket.birthday = data["birthday"];
