@@ -82,7 +82,7 @@ let hFriend = (() => {
             }
         } else { //offline save in database
             // await mInvitation.update_invitation(conn,from.socket.phone,is_accept?1:0);
-            mInvitation.update_invitation(conn, from.socket.phone, is_accept ? 1 : 0);
+            mInvitation.update_invitation(conn, from,socket.phone, is_accept ? 1 : 0);
         }
 
     };
