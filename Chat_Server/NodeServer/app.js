@@ -28,7 +28,7 @@ var lst_online_user = {};
 
 io.on('connection',function(socket){
     socket.on('disconnect', function () {
-        console(socket.phone +" IS DISCONNECT." )
+        console.log("--------------------"+socket.phone +" IS DISCONNECT." );
     });
     socket.on('before_disconnect', function () {
         hUser.before_disconnect(socket, lst_online_user);

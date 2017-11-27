@@ -26,4 +26,8 @@ exports = module.exports = (io,socket,connection, lst_online_user) =>{
     socket.on('forgot_pass', function (data) {
         hRegister.request(socket,data, connection);
     });
+    //-------------------- update_user_info
+    socket.on('update_user_info', function (data) {
+        hUser.update_user_info(io,socket,data,lst_online_user);
+    });
 }
