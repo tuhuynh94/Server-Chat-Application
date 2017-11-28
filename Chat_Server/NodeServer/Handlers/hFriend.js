@@ -33,8 +33,8 @@ let hFriend = (() => {
         })
     };
     //check
-    let _request_add_friend = (io, socket, data, conn, lst_online_user) => {
-        console.log("========== _response_add_friend =========");
+    let _invite_friend = (io, socket, data, conn, lst_online_user) => {
+        console.log("========== invite_friend =========");
         let sentTo = data['other_phone'];
         let other_socket_id = lst_online_user[sentTo];
         let otherSocket = null;
@@ -48,7 +48,7 @@ let hFriend = (() => {
 
         } else {
             //await mInvitation.add_invitation(conn,socket.phone,socket.username,sentTo);
-            mInvitation.add_invitation(conn, socket.phone, socket.username, sentTo);
+            mInvitation.add_invitation(conn, socket,sentTo);
         }
     };
     //check
@@ -72,16 +72,19 @@ let hFriend = (() => {
                     to: sentTo,
                 });
                 otherSocket.friends.push({
-                    email: socket.email,
-                    birthday: socket.birthday,
-                    username: socket.username,
-                    add_at: data["add_at"],
-                    phone: otherSocket.phone,
-                    friend_phone: socket.phone
+                    email: socket.email,birthday: socket.birthday,username: socket.username,
+                    add_at: data["add_at"],phone: otherSocket.phone, friend_phone: socket.phone,
+                    gender:socket.gender
+                });
+                socket.friends.push({
+                    email: data["email"],birthday: data["birthday"]
+                    ,username: data["username"],phone: socket.phone,friend_phone: from,
+                    gender:otherSocket.gender
                 });
 
                 otherSocket.join(socket.phone+"-friend");
                 socket.join(otherSocket);               
+
             } else {
                 otherSocket.emit('return_response_invite_friend', {
                     is_accept: false
@@ -89,17 +92,10 @@ let hFriend = (() => {
             }
         } else { //offline save, del in database            
             if (is_accept) {
-                mFriend.add_friend(conn, socket.phone,from);
+                mFriend.add_friend(conn, socket,from);
             }
         }   
-        socket.friends.push({
-            email: data["email"],
-            birthday: data["birthday"],
-            username: data["username"],
-            add_at: data["add_at"],
-            phone: socket.phone,
-            friend_phone: from
-        });
+        
         mInvitation.del_invitation(conn, from,socket.phone);     
     };
     //check
@@ -136,7 +132,7 @@ let hFriend = (() => {
 
     return {
         load_friends: _load_friends,
-        request_add_friend: _request_add_friend,
+        invite_friend: _invite_friend,
         response_add_friend: _response_add_friend,
         update_add_friend: _update_add_friend,
         unfriend: _unfriend,

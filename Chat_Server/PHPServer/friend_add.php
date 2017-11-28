@@ -26,7 +26,7 @@ if ($result->num_rows > 0) {
 
     $row = $result->fetch_assoc();
     
-    $sql = "INSERT INTO `friends`(`phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`,`id`) VALUES ('".$phone."','".$other_phone."','".$row["email"]."','".$row["birthday"]."','".$row["username"]."',NOW(),'NULL');";
+    $sql = "INSERT INTO `friends`(`phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`,`id`,`gender`,`image_source`) VALUES ('".$phone."','".$other_phone."','".$row["email"]."','".$row["birthday"]."','".$row["username"]."',NOW(),'NULL','".$row["gender"]."','".$row["image_source"]."');";
     $conn->query($sql);
     $sql = "SELECT * from friends ORDER BY id DESC LIMIT 1";
     $result = mysqli_query($conn,$sql);

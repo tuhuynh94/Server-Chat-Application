@@ -26,9 +26,10 @@ let mInvitation = (() =>{
         
     };
 
-    let _add_invitation = (conn,from,username,to) => {
-        let sql = "INSERT INTO `invite_friend` (`from_phone`,`from_user`,`to_phone`, `invited_at`,`status`) VALUES ('"
-         + from + "', '" + username + "','" + to + "', '',);";       
+    let _add_invitation = (conn,socket,to) => {
+        let sql = "INSERT INTO `invite_friend` (`from_phone`,`from_user`,`to_phone`, `invited_at`,`status`)VALUES ('"
+        + socket.phone + "', '" + socket.username + "','" + to + "', '','');";   
+        console.log(sql);
         conn.query(sql, function (err, rows) {
             if (err != null) {
                 console.log("_update user fail");

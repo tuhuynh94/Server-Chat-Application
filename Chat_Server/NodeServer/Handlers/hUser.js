@@ -9,6 +9,10 @@ let hUser = (() =>{
         socket.phone = data["phone"];
         socket.username = data["username"];
         socket.birthday = data["birthday"];
+        socket.gender = data["gender"];
+        socket.email = data["email"];
+        socket.image = data["image_source"];
+
         console.log("SOCKET.PHONE "+ socket.phone + "--------SOCKET.USERNAME " + socket.username + " ");       
 
         let c_socket = lst_online_user[socket.phone];

@@ -7,7 +7,7 @@ exports = module.exports = (io, socket, connection, lst_online_user) => {
     });
     //-------------------- request_add_friend
     socket.on('request_add_friend', function (data) {
-        hFriend.request_add_friend(io, socket, data, connection, lst_online_user);
+        hFriend.invite_friend(io, socket, data, connection, lst_online_user);
     });
     //-------------------- response_add_friend
     socket.on('response_add_friend', function (data) {

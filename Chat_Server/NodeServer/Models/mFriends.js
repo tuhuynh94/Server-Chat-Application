@@ -14,9 +14,9 @@ let mFriends = (()=>{
         });
 
     };
-    let _add_friend =(conn, phone, friend_phone)=>{
+    let _add_friend =(conn, socket, friend_phone)=>{
          let sql = "INSERT INTO `friends`(`id`, `phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`) VALUES ("+
-         "NULL,'"+friend_phone+"','"+phone+"','','','',NOW())";
+         "NULL,'"+friend_phone+"','"+socket.phone+"','"+socket.email+"','"+socket.birthday+"','"+socket.username+"',NOW())";
          console.log(sql);
         conn.query(sql, function(err,rows){
             if(err){
