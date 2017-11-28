@@ -15,7 +15,8 @@ let mInvitation = (() =>{
     };
 
     let _del_invitation = (conn,from,to,status) => {
-        let sql = "DELETE invite_friend  WHERE from_phone = '" + from + "' AND to_phone = '"+to+"'";        
+        let sql = "DELETE FROM invite_friend  WHERE from_phone = '" + from + "' AND to_phone = '"+to+"'";        
+        console.log(sql);
         conn.query(sql, function (err, rows) {
             if (err != null) {
                 console.log("_update user fail");

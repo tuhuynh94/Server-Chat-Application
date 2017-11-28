@@ -1,5 +1,6 @@
 let db = require('../Models/database');
 let mInvitation = require('../Models/mInvitation');
+let mFriend = require('../Models/mFriends');
 //let query = require('');
 
 let hFriend = (() => {
@@ -54,6 +55,9 @@ let hFriend = (() => {
     let _response_add_friend = (io, socket, data, lst_online_user, conn) => {
         console.log("========== _response_add_friend =========");
         let from = data['other_phone'];
+        socket.emit("answered_invitation",{from:from,});
+
+        
         let other_socket_id = lst_online_user[lst_online_user];
         let is_accept = data['is_accept'];
         //online
@@ -67,6 +71,10 @@ let hFriend = (() => {
                     birthday: socket.birthday,
                     to: sentTo,
                 });
+
+                otherSocket.join(socket.phone+"-friend");
+                socket.join(otherSocket);
+                
                 socket.friends.push({
                     email: data["email"],
                     birthday: data["birthday"],
@@ -78,14 +86,16 @@ let hFriend = (() => {
             } else {
                 otherSocket.emit('return_response_invite_friend', {
                     is_accept: false
-                });
+                });                
             }
-            mInvitation.del_invitation
-        } else { //offline save in database
-            // await mInvitation.update_invitation(conn,from.socket.phone,is_accept?1:0);
-            mInvitation.del_invitation(conn, from,socket.phone);
-        }
 
+            mInvitation.del_invitation(conn, from,socket.phone);
+        } else { //offline save, del in database            
+            mInvitation.del_invitation(conn, from,socket.phone);
+            if (is_accept) {
+                mFriend.add_friend(conn, socket.phone,from);
+            }
+        }        
     };
     //check
     let _update_add_friend = (socket, data) => {
