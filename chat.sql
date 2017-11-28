@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 24, 2017 lúc 11:08 AM
+-- Thời gian đã tạo: Th10 28, 2017 lúc 07:41 PM
 -- Phiên bản máy phục vụ: 10.1.25-MariaDB
 -- Phiên bản PHP: 5.6.31
 
@@ -43,9 +43,10 @@ CREATE TABLE `conversations` (
 --
 
 INSERT INTO `conversations` (`conversation_id`, `conversation_name`, `member`, `creator`, `created_at`, `updated_at`, `type`) VALUES
-(1, '123', '1,2,3', '1', '2017-10-18 00:00:00', '2017-10-24 09:16:37', 0),
-(2, '123', '1,2', '2', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0),
-(3, '123', '1,2,3', '11', '2017-10-24 09:22:26', '2017-10-24 09:22:26', 0);
+(1, '123', '1,2,', '1', '2017-10-18 00:00:00', '2017-10-24 09:16:37', 0),
+(2, '123', '1,2,', '2', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0),
+(3, '123', '1,2', '11', '2017-10-24 09:22:26', '2017-10-24 09:22:26', 0),
+(4, '1685574968', '11', '1', '2017-11-29 00:21:19', '2017-11-29 00:21:19', 0);
 
 -- --------------------------------------------------------
 
@@ -60,6 +61,8 @@ CREATE TABLE `friends` (
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `birthday` date NOT NULL DEFAULT '1990-01-01',
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `gender` tinyint(4) NOT NULL DEFAULT '0',
+  `image_source` text COLLATE utf8_unicode_ci NOT NULL,
   `add_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -67,12 +70,13 @@ CREATE TABLE `friends` (
 -- Đang đổ dữ liệu cho bảng `friends`
 --
 
-INSERT INTO `friends` (`id`, `phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`) VALUES
-(1, '01685574968', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
-(2, '01685574969', '01685574968', '', '2017-10-08', '', '2017-09-11 00:00:00'),
-(3, '1', '01685574967', '', '2017-10-01', '', '2017-09-11 00:00:00'),
-(4, '1', '01685574968', '', '2017-10-01', '', '2017-09-11 00:00:00'),
-(6, '1', '2', '', '0000-00-00', '', '2017-11-24 15:10:06');
+INSERT INTO `friends` (`id`, `phone`, `friend_phone`, `email`, `birthday`, `username`, `gender`, `image_source`, `add_at`) VALUES
+(1, '01685574968', '01685574967', '', '2017-10-01', '', 0, '', '2017-09-11 00:00:00'),
+(2, '01685574969', '01685574968', '', '2017-10-08', '', 0, '', '2017-09-11 00:00:00'),
+(3, '1', '01685574967', '', '2017-10-01', '', 0, '', '2017-09-11 00:00:00'),
+(4, '1', '01685574968', '', '2017-10-01', '', 0, '', '2017-09-11 00:00:00'),
+(34, '1', '11', '', '1990-01-01', '1685574968', 0, '', '2017-11-29 01:21:48'),
+(35, '11', '1', 'thuongtruong2702@gmail.com', '0000-00-00', 'ahihihi', 0, '', '2017-11-29 01:21:48');
 
 -- --------------------------------------------------------
 
@@ -93,9 +97,8 @@ CREATE TABLE `invite_friend` (
 --
 
 INSERT INTO `invite_friend` (`from_phone`, `from_user`, `to_phone`, `invited_at`, `status`) VALUES
-('1', '', '1', '2017-09-18 00:00:00', 0),
-('1', '', '2', '2017-09-28 10:26:27', 0),
-('2', '', '1', '2017-10-18 00:00:00', 0);
+('1', 'ahihihi', '123', '0000-00-00 00:00:00', 0),
+('2', '', '1', '2017-11-29 01:05:30', 0);
 
 -- --------------------------------------------------------
 
@@ -150,22 +153,24 @@ CREATE TABLE `users` (
   `phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `username` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `image_source` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `gender` tinyint(4) NOT NULL DEFAULT '0' COMMENT '0: Female - 1:Male',
+  `image_source` text COLLATE utf8_unicode_ci NOT NULL,
   `status` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `birthday` date NOT NULL DEFAULT '1990-01-01',
   `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `conversations` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'conversationid cach nhau '','''
+  `conversations` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'conversationid cach nhau '',''',
+  `friends` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`phone`, `password`, `username`, `image_source`, `status`, `birthday`, `email`, `conversations`) VALUES
-('1', '1', '2', '', '', '0000-00-00', NULL, '1,2,'),
-('123123123123', '1', 'user1', '', '', '2017-10-01', NULL, '1,'),
-('1685574968', '123321', '1685574968', '', '', '1990-01-01', NULL, ''),
-('2', '1', '1', '', '', '0000-00-00', NULL, '1,2,');
+INSERT INTO `users` (`phone`, `password`, `username`, `gender`, `image_source`, `status`, `birthday`, `email`, `conversations`, `friends`) VALUES
+('1', '1', 'ahihihi', 0, '', '', '1990-01-01', 'thuongtruong2702@gmail.com', '1,2,', ''),
+('11', '123321', '1685574968', 0, '', '', '1990-01-01', NULL, '', ''),
+('123', '1', 'user1', 0, '', '', '2017-10-01', NULL, '1,', ''),
+('2', '1', '1', 0, '', '', '0000-00-00', NULL, '1,2,', '');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -215,12 +220,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT cho bảng `friends`
 --
 ALTER TABLE `friends`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT cho bảng `messages`
 --
