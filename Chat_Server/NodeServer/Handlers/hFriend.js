@@ -54,9 +54,7 @@ let hFriend = (() => {
     //check
     let _response_add_friend = (io, socket, data, lst_online_user, conn) => {
         console.log("========== _response_add_friend =========");
-        let from = data['other_phone'];
-        socket.emit("answered_invitation",{from:from,});
-
+        let from = data['other_phone'];      
         
         let other_socket_id = lst_online_user[lst_online_user];
         let is_accept = data['is_accept'];
@@ -95,7 +93,7 @@ let hFriend = (() => {
                 mFriend.add_friend(conn, socket,from);
             }
         }   
-        
+        socket.emit("answered_invitation",{from:from,});
         mInvitation.del_invitation(conn, from,socket.phone);     
     };
     //check

@@ -14,7 +14,7 @@ let mInvitation = (() =>{
         });
     };
 
-    let _del_invitation = (conn,from,to,status) => {
+    let _del_invitation = (conn,from,to) => {
         let sql = "DELETE FROM invite_friend  WHERE from_phone = '" + from + "' AND to_phone = '"+to+"'";        
         console.log(sql);
         conn.query(sql, function (err, rows) {
