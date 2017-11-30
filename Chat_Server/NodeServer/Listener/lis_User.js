@@ -28,8 +28,8 @@ exports = module.exports = (io,socket,connection, lst_online_user) =>{
         hRegister.request(socket,data, connection);
     });
     //-------------------- update_user_info
-    socket.on('update_user_info', function (data) {
-        hUser.update_user_info(io,socket,data,global.lst_online_user);
+    socket.on('update_user', function (data) {
+        hUser.update_user_info(io,socket,data);
     });
     //-------------------- change avatar------------------------------------
     socket.on("change_avatar", function(data){

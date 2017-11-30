@@ -1,6 +1,8 @@
 
 let db = require('../Models/database');
 let hFriend = require('../Handlers/hFriend');
+let hConversation = require('../Handlers/hConversation');
+let hInvivation = require('../Handlers/hInvitation');
 let fs = require('fs');
 var path = "C:\\Users\\gardo\\Desktop\\Server-Chat-Application\\Chat_Server\\PHPServer\\image_user\\";
  
@@ -15,6 +17,7 @@ let hUser = (() =>{
         socket.email = data["email"];
         socket.image = data["image_source"];
 
+
         console.log("SOCKET.PHONE "+ socket.phone + "--------SOCKET.USERNAME " + socket.username + " ");       
 
         let c_socket = global.lst_online_user[socket.phone];
@@ -22,6 +25,8 @@ let hUser = (() =>{
             global.lst_online_user[socket.phone] = socket.id;   
             console.log(global.lst_online_user[socket.phone]); 
         }       
+
+        hInvivation.load_invitation(socket,lst_online_user);
         // REVIEW: multi device with a user
         
     }
@@ -34,7 +39,10 @@ let hUser = (() =>{
     let _update_user_info = (socket,data,lst_online_user)=>{
         console.log("update user information");
         socket.username= data["username"];
-        hFriend.broadcash_all_friend(socket,data,"update_info");
+        hFriend.broadcash_all_friend(socket,data,"update_info_friend");
+        hConversation.broadcash_to_all_conversation(socket,data,"update_info_conversation");
+        hInvivation.broadcash_all_invitaion(socket,data,"update_info_invitation");
+
     }
 
     //NOT USE

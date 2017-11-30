@@ -8,7 +8,7 @@ var hFriend = (() => {
     //DONE
     let _load_friends = (io,socket,lst_online_user) => {
         console.log("========== _load_friends =========");
-        socket.friends = db.friends().filter(f => f.phone == socket.phone || f.friend_phone == socket.phone);
+        socket.friends = db.friends().filter(f => f.phone == socket.phone);
         console.log(socket.friends.length);
         socket.join(socket.phone+"-friend");
 
