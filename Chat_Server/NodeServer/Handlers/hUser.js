@@ -1,6 +1,8 @@
 
 let db = require('../Models/database');
 let hFriend = require('../Handlers/hFriend');
+let fs = require('fs');
+var path = "C:\\Users\\gardo\\Desktop\\Server-Chat-Application\\Chat_Server\\PHPServer\\image_user\\";
  
 let hUser = (() =>{
     let _connect = (socket,data,lst_online_user)=>{        
@@ -15,9 +17,10 @@ let hUser = (() =>{
 
         console.log("SOCKET.PHONE "+ socket.phone + "--------SOCKET.USERNAME " + socket.username + " ");       
 
-        let c_socket = lst_online_user[socket.phone];
+        let c_socket = global.lst_online_user[socket.phone];
         if ( typeof(c_socket) == 'undefined') {
-            lst_online_user[socket.phone] = socket.id;    
+            global.lst_online_user[socket.phone] = socket.id;   
+            console.log(global.lst_online_user[socket.phone]); 
         }       
         // REVIEW: multi device with a user
         
@@ -25,7 +28,7 @@ let hUser = (() =>{
     let _before_disconnect = (socket,data,lst_online_user)=>{        
         console.log("================disconnect==================");
         hFriend.broadcash_all_friend(socket,"offline","offline");
-        delete lst_online_user[socket.phone];
+        delete global.lst_online_user[socket.phone];
     }
 
     let _update_user_info = (socket,data,lst_online_user)=>{
@@ -76,10 +79,30 @@ let hUser = (() =>{
            });
     };   
 
+    let _change_image = (socket, data) => {
+        fs.exists(path + "test.jpg", async function(exists) {
+            if (exists) {
+                fs.unlinkSync(path + "test.jpg");
+                await fs.writeFileSync(path + "test.jpg", data);
+            }
+            else{
+                await fs.writeFileSync(path + "test.jpg", data);
+            }
+            fs.readFile(path + "test.jpg", function(err, res){
+                if(!err){
+                    socket.emit('change_avatar', {image:res});
+                }
+                else{
+                    console.log('fail');
+                }
+            });
+        });
+    };
     return{
         connect:_connect
         , before_disconnect: _before_disconnect
         , update_user_info:_update_user_info
+        , change_avatar: _change_image
         // login:_login,
         // , updateInfo: _updateInfo
     };

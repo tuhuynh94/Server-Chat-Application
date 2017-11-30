@@ -18,11 +18,9 @@ let hChat = (() =>{
 
     let _edit_msg =  (socket, data)=> {
         console.log("========== edit message =========");
-
     };
     let _del_msg =  (socket, data) =>{
         console.log("========== edit message =========");
-
     };
 
     let _send_group_msg = (socket, data) => {

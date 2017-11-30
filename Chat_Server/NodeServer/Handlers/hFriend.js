@@ -1,9 +1,9 @@
-let db = require('../Models/database');
-let mInvitation = require('../Models/mInvitation');
-let mFriend = require('../Models/mFriends');
+var db = require('../Models/database');
+var mInvitation = require('../Models/mInvitation');
+var mFriend = require('../Models/mFriends');
 //let query = require('');
 
-let hFriend = (() => {
+var hFriend = (() => {
 
     //DONE
     let _load_friends = (io,socket,lst_online_user) => {
@@ -15,7 +15,7 @@ let hFriend = (() => {
         //add all friend in socket.phone-friend room
         for (var index = 0; index < socket.friends.length; index++) {
             var element = socket.friends[index];
-            var other_socket_id = lst_online_user[element.friend_phone];
+            var other_socket_id = global.lst_online_user[element.friend_phone];
             if (typeof (other_socket_id) != 'undefined') {
                 var other_socket = io.sockets.connected[other_socket_id];
                 io.sockets.connected[other_socket_id].join(socket.phone+"-friend");                
@@ -36,16 +36,16 @@ let hFriend = (() => {
     let _invite_friend = (io, socket, data, conn, lst_online_user) => {
         console.log("========== invite_friend =========");
         let sentTo = data['other_phone'];
-        let other_socket_id = lst_online_user[sentTo];
+        let other_socket_id = global.lst_online_user[sentTo];
         let otherSocket = null;
 
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
             otherSocket = io.sockets.sockets[other_socket_id];
-            io.sockets.connected[otherSocket].emit('invite_friend', {
+            otherSocket.emit('invite_friend', {
                 from: socket.phone,
                 from_username: socket.username,
             });
-
+            //thêm vào danh sách invite client
         } else {
             //await mInvitation.add_invitation(conn,socket.phone,socket.username,sentTo);
             mInvitation.add_invitation(conn, socket,sentTo);
@@ -56,7 +56,7 @@ let hFriend = (() => {
         console.log("========== _response_add_friend =========");
         let from = data['other_phone'];      
         
-        let other_socket_id = lst_online_user[lst_online_user];
+        let other_socket_id = global.lst_online_user[global.lst_online_user];
         let is_accept = data['is_accept'];
         //online
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
@@ -113,7 +113,7 @@ let hFriend = (() => {
         let flat = data["flat"];
         let other_phone = data["other_phone"];
 
-        let other_socket_id = lst_online_user[other_phone];
+        let other_socket_id = global.lst_online_user[other_phone];
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
             if (flat) {
                 io.sockets.connected[otherSocket].emit('un_friend', {

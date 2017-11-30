@@ -1,6 +1,7 @@
 
 var hRegister = require('../Handlers/hRegister');
 let hUser = require('../Handlers/hUser');
+var fs = require('fs');
 
 exports = module.exports = (io,socket,connection, lst_online_user) =>{
         //-------------------- sent request to get verification code
@@ -28,6 +29,10 @@ exports = module.exports = (io,socket,connection, lst_online_user) =>{
     });
     //-------------------- update_user_info
     socket.on('update_user_info', function (data) {
-        hUser.update_user_info(io,socket,data,lst_online_user);
+        hUser.update_user_info(io,socket,data,global.lst_online_user);
+    });
+    //-------------------- change avatar------------------------------------
+    socket.on("change_avatar", function(data){
+        hUser.change_avatar(socket, data);
     });
 }
