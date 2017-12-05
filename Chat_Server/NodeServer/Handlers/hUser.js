@@ -20,10 +20,10 @@ let hUser = (() =>{
 
         console.log("SOCKET.PHONE "+ socket.phone + "--------SOCKET.USERNAME " + socket.username + " ");       
 
-        let c_socket = global.lst_online_user[socket.phone];
+        let c_socket = lst_online_user[socket.phone];
         if ( typeof(c_socket) == 'undefined') {
-            global.lst_online_user[socket.phone] = socket.id;   
-            console.log(global.lst_online_user[socket.phone]); 
+            lst_online_user[socket.phone] = socket.id;   
+            console.log(lst_online_user[socket.phone]); 
         }       
 
         hInvivation.load_invitation(socket,lst_online_user);
@@ -33,7 +33,7 @@ let hUser = (() =>{
     let _before_disconnect = (socket,data,lst_online_user)=>{        
         console.log("================before disconnect==================");
         hFriend.broadcash_all_friend(socket,"offline","offline");
-        delete global.lst_online_user[socket.phone];
+        delete lst_online_user[socket.phone];
     }
 
     let _update_user_info = (socket,data,lst_online_user)=>{

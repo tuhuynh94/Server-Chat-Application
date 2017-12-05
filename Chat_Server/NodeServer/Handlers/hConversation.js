@@ -31,7 +31,7 @@ let conversation = (() => {
 
         let members = data["members"].split(',');
         for (let index = 0; index < members.length - 1; index++) {
-            let i_socket = io.sockets.connected[global.lst_online_user[members[index]]];
+            let i_socket = io.sockets.connected[lst_online_user[members[index]]];
             if (i_socket != null && typeof (i_socket) != 'undefined') {
                 i_socket.join(conversation_id);
                 i_socket.conversations.push({
@@ -50,7 +50,7 @@ let conversation = (() => {
     let _add_member = (io, socket, data, lst_online_user) => {
         let conversation_id = data["conversation_id"];
         let username = data["username"];
-        let other_socket_id = global.lst_online_user[data["other_phone"]];
+        let other_socket_id = lst_online_user[data["other_phone"]];
 
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
             var other_socket = io.sockets.connected[other_socket_id];
@@ -66,7 +66,7 @@ let conversation = (() => {
     }
     let _leave_conversation = (io, socket, data, lst_online_user) => {
         let conversation = data["conversation_id"];
-        let other_socket_id = global.lst_online_user[data["phone"]];
+        let other_socket_id = lst_online_user[data["phone"]];
         let other_username = data["username"];
 
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {

@@ -15,7 +15,7 @@ var hFriend = (() => {
         //add all friend in socket.phone-friend room
         for (var index = 0; index < socket.invitaions.length; index++) {
             var element = socket.invitaions[index];
-            var other_socket_id = global.lst_online_user[element.to_phone];
+            var other_socket_id = lst_online_user[element.to_phone];
             if (typeof (other_socket_id) != 'undefined') {
                 var other_socket = io.sockets.connected[other_socket_id];
                 io.sockets.connected[other_socket_id].join(socket.phone+"-invitaion");                

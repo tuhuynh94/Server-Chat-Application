@@ -3,7 +3,7 @@ var hFriend = require('../Handlers/hFriend');
 exports = module.exports = (io, socket, connection, lst_online_user) => {
     //-------------------- request_load_friend
     socket.on('request_load_friend', function () {
-        hFriend.load_friends(io, socket, global.lst_online_user);
+        hFriend.load_friends(io, socket, globallst_online_user);
     });
     //-------------------- request_add_friend
     socket.on('request_add_friend', function (data) {
