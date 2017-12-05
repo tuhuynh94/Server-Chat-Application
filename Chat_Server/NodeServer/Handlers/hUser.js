@@ -31,7 +31,7 @@ let hUser = (() =>{
         
     }
     let _before_disconnect = (socket,data,lst_online_user)=>{        
-        console.log("================disconnect==================");
+        console.log("================before disconnect==================");
         hFriend.broadcash_all_friend(socket,"offline","offline");
         delete global.lst_online_user[socket.phone];
     }

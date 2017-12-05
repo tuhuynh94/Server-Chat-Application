@@ -33,14 +33,14 @@ var hFriend = (() => {
         })
     };
     //check
-    let _invite_friend = (io, socket, data, conn, lst_online_user) => {
+    let _invite_friend = async (io, socket, data, conn, lst_online_user) => {
         console.log("========== invite_friend =========");
         let sentTo = data['other_phone'];
         let other_socket_id = global.lst_online_user[sentTo];
         let otherSocket = null;
-
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
             otherSocket = io.sockets.sockets[other_socket_id];
+            await mInvitation.add_invitation(conn, socket,sentTo);
             otherSocket.emit('invite_friend', {
                 from: socket.phone,
                 from_username: socket.username,

@@ -29,9 +29,9 @@ let conversation = (() => {
         let conversation_id = data["conversation_id"];
         let conversation_name = data["conversation_name"];
 
-        let members = data["member"].split(',');
+        let members = data["members"].split(',');
         for (let index = 0; index < members.length - 1; index++) {
-            let i_socket = io.socket.connected[global.lst_online_user[members[index]]];
+            let i_socket = io.sockets.connected[global.lst_online_user[members[index]]];
             if (i_socket != null && typeof (i_socket) != 'undefined') {
                 i_socket.join(conversation_id);
                 i_socket.conversations.push({
