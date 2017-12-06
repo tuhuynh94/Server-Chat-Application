@@ -21,7 +21,7 @@ exports = module.exports = (io,socket,connection, lst_online_user) =>{
     //-------------------- login
     socket.on('login', function (data) {
         console.log("----------------- user login --------------");        
-        hUser.connect(socket, data, connection);
+        hUser.connect(socket, data, lst_online_user);
     });
     //-------------------- forgot_pass
     socket.on('forgot_pass', function (data) {
@@ -29,7 +29,7 @@ exports = module.exports = (io,socket,connection, lst_online_user) =>{
     });
     //-------------------- update_user_info
     socket.on('update_user', function (data) {
-        hUser.update_user_info(io,socket,data);
+        hUser.update_user_info(socket,data, lst_online_user);
     });
     //-------------------- change avatar------------------------------------
     socket.on("change_avatar", function(data){

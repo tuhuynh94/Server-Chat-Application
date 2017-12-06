@@ -30,7 +30,7 @@ let hUser = (() =>{
         // REVIEW: multi device with a user
         
     }
-    let _before_disconnect = (socket,data,lst_online_user)=>{        
+    let _before_disconnect = (socket, lst_online_user)=>{        
         console.log("================before disconnect==================");
         hFriend.broadcash_all_friend(socket,"offline","offline");
         delete lst_online_user[socket.phone];

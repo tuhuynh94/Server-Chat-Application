@@ -19,6 +19,7 @@ var connection = mysql.createConnection({
 });
 var db = require('./Models/database');
 var hUser = require('./Handlers/hUser');
+var mListUser = require('./Models/mListUser');
 setTimeout(function(){
     console.log("all users ----"+ db.users().length);
     console.log("all conversations ----"+ db.conversations().length);
@@ -28,22 +29,18 @@ setTimeout(function(){
     console.log("all messages ----"+ db.messages().length);
 },1000);
 
-var lst_online_user = {};
 io.on('connection',function(socket){
     socket.on('disconnect', function () {
         console.log("--------------------"+socket.phone +" IS DISCONNECT." );
     });
     socket.on('before_disconnect', function () {
-        hUser.before_disconnect(socket, lst_online_user);
+        hUser.before_disconnect(socket, mListUser.get_lst_user_online);
     })
 
-    var friends = require('./Listener/lis_Friend')(io,socket,connection, lst_online_user);
-    var user = require('./Listener/lis_User')(io, socket, connection, lst_online_user);
-    var conversation = require('./Listener/lis_Conversation')(io, socket, connection, lst_online_user);
-    var chat = require('./Listener/lis_Chat')(io, socket, connection, lst_online_user);
+    var friends = require('./Listener/lis_Friend')(io,socket,connection, mListUser.get_lst_user_online);
+    var user = require('./Listener/lis_User')(io, socket, connection, mListUser.get_lst_user_online);
+    var conversation = require('./Listener/lis_Conversation')(io, socket, connection, mListUser.get_lst_user_online);
+    var chat = require('./Listener/lis_Chat')(io, socket, connection, mListUser.get_lst_user_online);
 });
-var get_list_online_list = function(){
-    return lst_online_user;
-}
 // io.attach(3000);
 // console.log("Listening port 3000");
