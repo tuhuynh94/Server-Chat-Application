@@ -33,10 +33,6 @@ let hUser = (() =>{
     let _before_disconnect = (socket, lst_online_user)=>{        
         console.log("================before disconnect==================");
         hFriend.broadcash_all_friend(socket,"offline","offline");
-        for (var index = 0; index < socket.conversations.length; index++) {
-            var element = socket.conversations[index];
-            socket.leave(element.conversation_id);            
-        }
         delete lst_online_user[socket.phone];
     }
 
