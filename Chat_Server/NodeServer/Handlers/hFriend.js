@@ -18,7 +18,7 @@ var hFriend = (() => {
             var other_socket_id = lst_online_user[element.friend_phone];
             if (typeof (other_socket_id) != 'undefined') {
                 var other_socket = io.sockets.connected[other_socket_id];
-                io.sockets.connected[other_socket_id].join(socket.phone+"-friend");                
+                other_socket.join(socket.phone+"-friend");                
             }
         }
         //broadcash infomation to all friend (socket,content, type);

@@ -6,7 +6,7 @@ var mFriend = require('../Models/mFriends');
 var hFriend = (() => {
 
     //DONE
-    let _load_invitation = (socket,lst_online_user) => {
+    let _load_invitation = (io,socket,lst_online_user) => {
         console.log("========== _load_invitaion =========");
         socket.invitaions = db.invite_friends().filter(f => f.from_phone == socket.phone);
         console.log(socket.invitaions.length);

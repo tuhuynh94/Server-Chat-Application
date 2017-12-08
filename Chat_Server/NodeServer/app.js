@@ -32,9 +32,10 @@ setTimeout(function(){
 io.on('connection',function(socket){
     socket.on('disconnect', function () {
         console.log("--------------------"+socket.phone +" IS DISCONNECT." );
+        hUser.before_disconnect(socket, mListUser.get_lst_user_online);
     });
     socket.on('before_disconnect', function () {
-        hUser.before_disconnect(socket, mListUser.get_lst_user_online);
+        // hUser.before_disconnect(socket, mListUser.get_lst_user_online);
     })
 
     var friends = require('./Listener/lis_Friend')(io,socket,connection, mListUser.get_lst_user_online);

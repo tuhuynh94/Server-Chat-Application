@@ -7,7 +7,7 @@ let fs = require('fs');
 var path = "C:\\Users\\gardo\\Desktop\\Server-Chat-Application\\Chat_Server\\PHPServer\\image_user\\";
  
 let hUser = (() =>{
-    let _connect = (socket,data,lst_online_user)=>{        
+    let _connect = (io,socket,data,lst_online_user)=>{        
         console.log("------------login success connect to node server-------------");
         
         socket.phone = data["phone"];
@@ -26,13 +26,17 @@ let hUser = (() =>{
             console.log(lst_online_user[socket.phone]); 
         }       
 
-        hInvivation.load_invitation(socket,lst_online_user);
+        hInvivation.load_invitation(io,socket,lst_online_user);
         // REVIEW: multi device with a user
         
     }
     let _before_disconnect = (socket, lst_online_user)=>{        
         console.log("================before disconnect==================");
         hFriend.broadcash_all_friend(socket,"offline","offline");
+        for (var index = 0; index < socket.conversations.length; index++) {
+            var element = socket.conversations[index];
+            socket.leave(element.conversation_id);            
+        }
         delete lst_online_user[socket.phone];
     }
 
