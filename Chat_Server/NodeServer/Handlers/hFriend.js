@@ -52,12 +52,17 @@ var hFriend = (() => {
         }
     };
     //check
-    let _response_add_friend = (io, socket, data, lst_online_user, conn) => {
+    let _response_add_friend = async (io, socket, data, lst_online_user, conn) => {
         console.log("========== _response_add_friend =========");
         let from = data['other_phone'];      
         
         let other_socket_id = lst_online_user[lst_online_user];
         let is_accept = data['is_accept'];
+
+        let friend = await mFriend.add_friend(conn, socket.phone,from);
+
+        console.log(friend);
+
         //online
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
             let otherSocket = io.sockets.connected[other_socket_id];
@@ -71,12 +76,12 @@ var hFriend = (() => {
                 });
                 otherSocket.friends.push({
                     email: socket.email,birthday: socket.birthday,username: socket.username,
-                    add_at: data["add_at"],phone: otherSocket.phone, friend_phone: socket.phone,
+                    add_at: friend.add_at,phone: otherSocket.phone, friend_phone: socket.phone,
                     gender:socket.gender
                 });
                 socket.friends.push({
-                    email: data["email"],birthday: data["birthday"]
-                    ,username: data["username"],phone: socket.phone,friend_phone: from,
+                    email: friend.email,birthday: friend.birthday
+                    ,username: friend.username,phone: socket.phone,friend_phone: from,
                     gender:otherSocket.gender
                 });
 
@@ -90,10 +95,10 @@ var hFriend = (() => {
             }
         } else { //offline save, del in database            
             if (is_accept) {
-                mFriend.add_friend(conn, socket,from);
+                mFriend.add_friend(conn, from,socket.phone);
             }
         }   
-        socket.emit("answered_invitation",{from:from,});
+        socket.emit("answered_invitation",{from:from,}); //TODO
         mInvitation.del_invitation(conn, from,socket.phone);     
     };
     //check
