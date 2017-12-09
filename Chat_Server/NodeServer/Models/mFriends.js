@@ -47,8 +47,8 @@ let mFriends = (() => {
         });
     };
     let _insert = (user, conn, phone) => {
-        let sql = "INSERT INTO `friends`(`id`, `phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`) VALUES (" +
-            "NULL,'" + phone + "','" + user.phone + "','" + user.email + "','" + user.birthday + "','" + user.username + "',NOW())";
+        let sql = "INSERT INTO `friends`(`id`, `phone`, `friend_phone`, `email`, `birthday`, `username`, `add_at`,`image_source`) VALUES (" +
+            "NULL,'" + phone + "','" + user.phone + "','" + user.email + "','" + user.birthday + "','" + user.username + "',NOW(),'" + user.image_source +"')";
         let result = [];
         console.log("INSERT  - - " + sql);
         conn.query(sql, function (err, rows) {

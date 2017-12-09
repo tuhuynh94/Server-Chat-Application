@@ -56,12 +56,13 @@ var hFriend = (() => {
         console.log("========== _response_add_friend =========");
         let from = data['other_phone'];      
         
-        let other_socket_id = lst_online_user[lst_online_user];
+        let other_socket_id = lst_online_user[from];
         let is_accept = data['is_accept'];
 
         let friend = await mFriend.add_friend(conn, socket.phone,from);
+        socket.emit("answered_invitation",{from:from, friend:friend}); 
 
-        console.log(friend);
+        // console.log(friend);
 
         //online
         if (other_socket_id != null && typeof (other_socket_id) != 'undefined') {
@@ -72,7 +73,7 @@ var hFriend = (() => {
                     from: socket.phone,
                     from_username: socket.username,
                     birthday: socket.birthday,
-                    to: sentTo,
+                    to: from,
                 });
                 otherSocket.friends.push({
                     email: socket.email,birthday: socket.birthday,username: socket.username,
@@ -86,7 +87,7 @@ var hFriend = (() => {
                 });
 
                 otherSocket.join(socket.phone+"-friend");
-                socket.join(otherSocket);               
+                socket.join(otherSocket.phone+"-friend");               
 
             } else {
                 otherSocket.emit('return_response_invite_friend', {
@@ -95,10 +96,10 @@ var hFriend = (() => {
             }
         } else { //offline save, del in database            
             if (is_accept) {
-                mFriend.add_friend(conn, from,socket.phone);
+                friend = await mFriend.add_friend(conn, from,socket.phone);
             }
         }   
-        socket.emit("answered_invitation",{from:from,}); //TODO
+        
         mInvitation.del_invitation(conn, from,socket.phone);     
     };
     //check
