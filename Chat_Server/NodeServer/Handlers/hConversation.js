@@ -13,9 +13,9 @@ let conversation = (() => {
             }
         }
     };
-    let _broadcash_to_all_conversation = (socket, content, type) => {
+    let _broadcash_all_conversation = (socket, content, type) => {
         socket.conversations.forEach(function(element) {
-            socket.broadcast.to(element.conversation_id).emit("broadcast_to_all_conversation",{
+            socket.broadcast.to(element.conversation_id).emit("broadcast_all_conversation",{
                 conversation_id:element.conversation_id,
                 phone:socket.phone,
                 content:content,
@@ -89,7 +89,7 @@ let conversation = (() => {
         load_conversation: _load_conversation,
         add_member: _add_member,
         leave_conversation: _leave_conversation,
-        broadcash_to_all_conversation:_broadcash_to_all_conversation
+        broadcash_all_conversation:_broadcash_all_conversation
     }
 
 })();

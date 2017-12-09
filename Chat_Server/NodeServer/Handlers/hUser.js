@@ -40,7 +40,7 @@ let hUser = (() =>{
         console.log("update user information");
         socket.username= data["username"];
         hFriend.broadcash_all_friend(socket,data,"update_info_friend");
-        hConversation.broadcash_to_all_conversation(socket,data,"update_info_conversation");
+        hConversation.broadcash_all_conversation(socket,data,"update_info_conversation");
         hInvivation.broadcash_all_invitaion(socket,data,"update_info_invitation");
 
     }

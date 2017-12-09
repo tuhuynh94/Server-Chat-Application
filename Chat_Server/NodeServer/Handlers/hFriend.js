@@ -11,6 +11,7 @@ var hFriend = (() => {
         socket.friends = db.friends().filter(f => f.phone == socket.phone);
         console.log(socket.friends.length);
         socket.join(socket.phone+"-friend");
+        let phones ="";
 
         //add all friend in socket.phone-friend room
         for (var index = 0; index < socket.friends.length; index++) {
@@ -19,16 +20,19 @@ var hFriend = (() => {
             if (typeof (other_socket_id) != 'undefined') {
                 var other_socket = io.sockets.connected[other_socket_id];
                 other_socket.join(socket.phone+"-friend");                
+                phones+=other_socket.phone;
             }
         }
         //broadcash infomation to all friend (socket,content, type);
         _broadcash_all_friend(socket,"online","online");
+
+        socket.emit("update_status_list_friend",{phones:phones});
     };
 
     let _broadcash_all_friend = (socket,content,type) => {
         socket.broadcast.to(socket.phone+"-friend").emit("broadcast_all_friend",{
             type:type,
-            user:socket.username,
+            phone:socket.phone,
             content:content
         })
     };
