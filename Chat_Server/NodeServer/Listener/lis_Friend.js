@@ -21,4 +21,8 @@ exports = module.exports = (io, socket, connection, lst_online_user) => {
     socket.on('un_friend', function (data) {
         hFriend.unfriend(io, socket, data, lst_online_user);
     });
+    //-------------------- update_user_online
+    socket.on('update_user_online', function (data) {
+        hFriend.update_user_online(io, socket, data, lst_online_user);
+    });
 }

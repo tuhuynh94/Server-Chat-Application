@@ -28,6 +28,14 @@ var hFriend = (() => {
 
         socket.emit("update_status_list_friend",{phones:phones});
     };
+    let _update_user_online = (io, socket, data, lst_online_user)=>{
+        let phone = data["phone"];
+        var other_socket_id = lst_online_user[phone];
+        if (typeof (other_socket_id) != 'undefined') {
+            var other_socket = io.sockets.connected[other_socket_id];
+            other_socket.join(socket.phone+"-friend"); 
+        }
+    }
 
     let _broadcash_all_friend = (socket,content,type) => {
         socket.broadcast.to(socket.phone+"-friend").emit("broadcast_all_friend",{
@@ -145,6 +153,7 @@ var hFriend = (() => {
         update_add_friend: _update_add_friend,
         unfriend: _unfriend,
         broadcash_all_friend:_broadcash_all_friend,
+        update_user_online:_update_user_online
     };
 
 })();
