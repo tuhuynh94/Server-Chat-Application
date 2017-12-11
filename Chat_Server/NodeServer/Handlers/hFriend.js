@@ -36,7 +36,6 @@ var hFriend = (() => {
             other_socket.join(socket.phone+"-friend"); 
         }
     }
-
     let _broadcash_all_friend = (socket,content,type) => {
         socket.broadcast.to(socket.phone+"-friend").emit("broadcast_all_friend",{
             type:type,

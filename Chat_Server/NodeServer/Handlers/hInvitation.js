@@ -26,7 +26,8 @@ var hFriend = (() => {
     let _broadcash_all_invitaion = (socket,content,type) => {
         socket.broadcast.to(socket.phone+"-invitaion").emit("broadcast_all_invitation",{
             type:type,
-            user:socket.username,
+            phone: socket.phone,
+            username:socket.username,
             content:content
         })
     };

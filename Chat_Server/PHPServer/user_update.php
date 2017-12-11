@@ -15,7 +15,7 @@ $conn->set_charset("utf8");
 
 $phone = $_POST["phone"];
 $birthday = $_POST["birthday"];
-$password = $_POST["password"];
+$password = $_POST["pass"];
 $image_source = $_POST["image_source"];
 $username = $_POST["username"];
 $email = $_POST["email"];
@@ -24,7 +24,7 @@ $sql ="UPDATE users SET username = '".$username."', birthday = '".$birthday."', 
 echo $sql;
 $conn->query($sql); 
 
-$sql ="UPDATE friends SET username = '".$username."' WHERE friend_phone = '".$phone."'";
+$sql ="UPDATE friends SET username = '".$username."', email = '".$email."', birthday = '".$birthday."', gender = ".$gender.", image_source = '".$image_source"' WHERE friend_phone = '".$phone."'";
 echo $sql;
 $conn->query($sql); 
 

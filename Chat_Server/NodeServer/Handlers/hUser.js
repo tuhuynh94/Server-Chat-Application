@@ -17,7 +17,6 @@ let hUser = (() =>{
         socket.email = data["email"];
         socket.image = data["image_source"];
 
-
         console.log("SOCKET.PHONE "+ socket.phone + "--------SOCKET.USERNAME " + socket.username + " ");       
 
         let c_socket = lst_online_user[socket.phone];
@@ -42,7 +41,6 @@ let hUser = (() =>{
         hFriend.broadcash_all_friend(socket,data,"update_info_friend");
         hConversation.broadcash_all_conversation(socket,data,"update_info_conversation");
         hInvivation.broadcash_all_invitaion(socket,data,"update_info_invitation");
-
     }
 
     //NOT USE
