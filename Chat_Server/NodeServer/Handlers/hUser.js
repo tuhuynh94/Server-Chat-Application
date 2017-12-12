@@ -5,7 +5,6 @@ let hConversation = require('../Handlers/hConversation');
 let hInvivation = require('../Handlers/hInvitation');
 let fs = require('fs');
 var path = require('path');
-var upload_path = path.join(__dirname, "..", "PHPServer/image_user");
  
 let hUser = (() =>{
     let _connect = (io,socket,data,lst_online_user)=>{        
@@ -89,9 +88,11 @@ let hUser = (() =>{
     };   
 
     let _change_image = (socket, data) => {
+        var dir = __dirname;
+        var upload_path = path.join(__dirname, "../..", "PHPServer/image_user/");
         fs.exists(upload_path + socket.phone + ".jpg", async function(exists) {
             if (exists) {
-                fs.unlinkSync(upload_path + socket.phone + ".jpg");
+                await fs.unlinkSync(upload_path + socket.phone + ".jpg");
                 await fs.writeFileSync(upload_path + socket.phone + ".jpg", data);
             }
             else{
