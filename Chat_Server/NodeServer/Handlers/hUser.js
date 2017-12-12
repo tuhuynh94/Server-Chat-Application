@@ -38,9 +38,10 @@ let hUser = (() =>{
     let _update_user_info = (socket,data,lst_online_user)=>{
         console.log("update user information");
         socket.username= data["username"];
-        hFriend.broadcash_all_friend(socket,data,"update_info_friend");
-        hConversation.broadcash_all_conversation(socket,data,"update_info_conversation");
-        hInvivation.broadcash_all_invitaion(socket,data,"update_info_invitation");
+
+        hFriend.broadcash_all_friend(socket,data,"update_info_in_friend");
+        hConversation.broadcash_all_conversation(socket,data,"update_info_in_conversation");
+        hInvivation.broadcash_all_invitaion(socket,data,"update_info_in_invitation");
     }
 
     //NOT USE

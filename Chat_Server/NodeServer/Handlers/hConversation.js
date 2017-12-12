@@ -14,6 +14,7 @@ let conversation = (() => {
         }
     };
     let _broadcash_all_conversation = (socket, content, type) => {
+        console.log("broadcash to all conversations");
         socket.conversations.forEach(function(element) {
             socket.broadcast.to(element.conversation_id).emit("broadcast_all_conversation",{
                 conversation_id:element.conversation_id,
@@ -29,10 +30,12 @@ let conversation = (() => {
         let conversation_id = data["conversation_id"];
         let conversation_name = data["conversation_name"];
 
+        // socket.conversations.push({conversation_id:conversation_id, conversation_name:conversation_name});
+
         let members = data["members"].split(',');
         for (let index = 0; index < members.length - 1; index++) {
             let i_socket = io.sockets.connected[lst_online_user[members[index]]];
-            if (i_socket != null && typeof (i_socket) != 'undefined') {
+            if (typeof (i_socket) != 'undefined') {
                 i_socket.join(conversation_id);
                 i_socket.conversations.push({
                     conversation_id: conversation_id,
