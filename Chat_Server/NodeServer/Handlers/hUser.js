@@ -4,7 +4,8 @@ let hFriend = require('../Handlers/hFriend');
 let hConversation = require('../Handlers/hConversation');
 let hInvivation = require('../Handlers/hInvitation');
 let fs = require('fs');
-var path = "C:\\Users\\gardo\\Desktop\\Server-Chat-Application\\Chat_Server\\PHPServer\\image_user\\";
+var path = require('path');
+var upload_path = path.join(__dirname, "..", "PHPServer/image_user");
  
 let hUser = (() =>{
     let _connect = (io,socket,data,lst_online_user)=>{        
@@ -38,9 +39,11 @@ let hUser = (() =>{
     let _update_user_info = (socket,data,lst_online_user)=>{
         console.log("update user information");
         socket.username= data["username"];
-        hFriend.broadcash_all_friend(socket,data,"update_info_friend");
-        hConversation.broadcash_all_conversation(socket,data,"update_info_conversation");
-        hInvivation.broadcash_all_invitaion(socket,data,"update_info_invitation");
+
+        hFriend.broadcash_all_friend(socket,data,"update_info_in_friend");
+        var a = socket.conversations.length;
+        hConversation.broadcash_all_conversation(socket,data,"update_info_in_conversation");
+        hInvivation.broadcash_all_invitaion(socket,data,"update_info_in_invitation");
     }
 
     //NOT USE
@@ -86,17 +89,17 @@ let hUser = (() =>{
     };   
 
     let _change_image = (socket, data) => {
-        fs.exists(path + "test.jpg", async function(exists) {
+        fs.exists(upload_path + socket.phone + ".jpg", async function(exists) {
             if (exists) {
-                fs.unlinkSync(path + "test.jpg");
-                await fs.writeFileSync(path + "test.jpg", data);
+                fs.unlinkSync(upload_path + socket.phone + ".jpg");
+                await fs.writeFileSync(upload_path + socket.phone + ".jpg", data);
             }
             else{
-                await fs.writeFileSync(path + "test.jpg", data);
+                await fs.writeFileSync(upload_path + socket.phone + ".jpg", data);
             }
-            fs.readFile(path + "test.jpg", function(err, res){
+            fs.readFile(upload_path + socket.phone + ".jpg", function(err, res){
                 if(!err){
-                    socket.emit('change_avatar', {image:res});
+                    socket.emit('change_avatar', {image:res, image_path : socket.phone + ".jpg"});
                 }
                 else{
                     console.log('fail');
