@@ -37,7 +37,7 @@ var hFriend = (() => {
         }
     }
     let _broadcash_all_friend = (socket,content,type) => {
-        console.log("broadcash to friends");
+        console.log(type + "--- broadcash to friends ---");
         socket.broadcast.to(socket.phone+"-friend").emit("broadcast_all_friend",{
             type:type,
             phone:socket.phone,
