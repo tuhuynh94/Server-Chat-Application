@@ -5,23 +5,30 @@ let conversation = (() => {
     let _load_conversation = (socket, data) => {
         socket.conversations = [];
         let conversation_id = data['conversation_id'].split(',');
+        console.log(conversation_id);
+
         for (let i = 0; i < conversation_id.length; i++) {
             if (conversation_id[i] != '') {
-                socket.conversations.push(db.conversations().filter(f => f.conversation_id === conversation_id[i].conversation_id));
+                socket.conversations.push(db.conversations().filter(f => f.conversation_id == conversation_id[i]));
                 socket.join(conversation_id[i]);
                 console.log("Join room " + conversation_id[i]);
             }
         }
     };
     let _broadcash_all_conversation = (socket, content, type) => {
-        socket.conversations.forEach(function(element) {
-            socket.broadcast.to(element.conversation_id).emit("broadcast_all_conversation",{
-                conversation_id:element.conversation_id,
+        console.log(type + " --- broadcash to all conversations ---");
+        console.log("conversation lenght " + socket.conversations);
+        for(let i = 0; i<socket.conversations.length;i++) {
+            let element = socket.conversations[i];
+            console.log(element[0]);
+            console.log("emit to conversation " + element[0].conversation_id);
+            socket.broadcast.to(element[0].conversation_id).emit("broadcast_all_conversation",{
+                conversation_id:element[0].conversation_id,
                 phone:socket.phone,
                 content:content,
                 type:type
             });
-        }, this);
+        }
     }
     //check
     let _add_conversation = (io, socket, data, lst_online_user) => {
@@ -29,10 +36,12 @@ let conversation = (() => {
         let conversation_id = data["conversation_id"];
         let conversation_name = data["conversation_name"];
 
+        // socket.conversations.push({conversation_id:conversation_id, conversation_name:conversation_name});
+
         let members = data["members"].split(',');
         for (let index = 0; index < members.length - 1; index++) {
             let i_socket = io.sockets.connected[lst_online_user[members[index]]];
-            if (i_socket != null && typeof (i_socket) != 'undefined') {
+            if (typeof (i_socket) != 'undefined') {
                 i_socket.join(conversation_id);
                 i_socket.conversations.push({
                     conversation_id: conversation_id,

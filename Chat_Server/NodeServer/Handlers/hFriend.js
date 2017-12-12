@@ -37,6 +37,7 @@ var hFriend = (() => {
         }
     }
     let _broadcash_all_friend = (socket,content,type) => {
+        console.log(type + "--- broadcash to friends ---");
         socket.broadcast.to(socket.phone+"-friend").emit("broadcast_all_friend",{
             type:type,
             phone:socket.phone,
@@ -98,8 +99,9 @@ var hFriend = (() => {
                 });
 
                 otherSocket.join(socket.phone+"-friend");
-                socket.join(otherSocket.phone+"-friend");               
+                socket.join(otherSocket.phone+"-friend");   
 
+                socket.leave(otherSocket.phone+"-invitaion");   
             } else {
                 otherSocket.emit('return_response_invite_friend', {
                     is_accept: false

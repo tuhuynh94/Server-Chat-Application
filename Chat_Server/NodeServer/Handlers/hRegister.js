@@ -8,7 +8,7 @@ const enums = require('authy-client').enums;
 let hRegister = (  () =>{   
     let _register =   (socket, data, conn) =>{
          console.log("================hRegister==================")
-        let sql = "INSERT INTO users (`phone`, `password`, `username`) VALUES(" + "'0" + socket.phone + "'," + data["pass"] + "," + "'0" + socket.phone + "')";
+        let sql = "INSERT INTO users (`phone`, `password`, `username`,`birthday`) VALUES(" + "'0" + socket.phone + "'," + data["pass"] + "," + "'0" + socket.phone + "','NULL')";
         console.log(sql);
         let addUser = (sql) => {
             return new Promise((resolve, reject) => {
