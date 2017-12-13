@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 28, 2017 lúc 07:41 PM
--- Phiên bản máy phục vụ: 10.1.25-MariaDB
--- Phiên bản PHP: 5.6.31
+-- Thời gian đã tạo: Th12 13, 2017 lúc 03:26 PM
+-- Phiên bản máy phục vụ: 10.1.28-MariaDB
+-- Phiên bản PHP: 7.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -43,10 +43,7 @@ CREATE TABLE `conversations` (
 --
 
 INSERT INTO `conversations` (`conversation_id`, `conversation_name`, `member`, `creator`, `created_at`, `updated_at`, `type`) VALUES
-(1, '123', '1,2,', '1', '2017-10-18 00:00:00', '2017-10-24 09:16:37', 0),
-(2, '123', '1,2,', '2', '2017-10-10 00:00:00', '2017-10-10 00:00:00', 0),
-(3, '123', '1,2', '11', '2017-10-24 09:22:26', '2017-10-24 09:22:26', 0),
-(4, '1685574968', '11', '1', '2017-11-29 00:21:19', '2017-11-29 00:21:19', 0);
+(5, 'zerozx', '0924493220,01657595705,', '0924493220', '2017-12-13 21:04:38', '2017-12-13 21:04:38', 0);
 
 -- --------------------------------------------------------
 
@@ -71,12 +68,8 @@ CREATE TABLE `friends` (
 --
 
 INSERT INTO `friends` (`id`, `phone`, `friend_phone`, `email`, `birthday`, `username`, `gender`, `image_source`, `add_at`) VALUES
-(1, '01685574968', '01685574967', '', '2017-10-01', '', 0, '', '2017-09-11 00:00:00'),
-(2, '01685574969', '01685574968', '', '2017-10-08', '', 0, '', '2017-09-11 00:00:00'),
-(3, '1', '01685574967', '', '2017-10-01', '', 0, '', '2017-09-11 00:00:00'),
-(4, '1', '01685574968', '', '2017-10-01', '', 0, '', '2017-09-11 00:00:00'),
-(34, '1', '11', '', '1990-01-01', '1685574968', 0, '', '2017-11-29 01:21:48'),
-(35, '11', '1', 'thuongtruong2702@gmail.com', '0000-00-00', 'ahihihi', 0, '', '2017-11-29 01:21:48');
+(70, '0924493220', '01657595705', 'gardonzx@gmail.com', '0000-00-00', '01657595705', 0, 'http://192.168.1.69/chat/image_user/01657595705_20171213212225.jpg', '2017-12-13 20:52:45'),
+(71, '01657595705', '0924493220', 'zerozx@gmail.com', '0000-00-00', 'zerozx', 0, '', '2017-12-13 20:52:45');
 
 -- --------------------------------------------------------
 
@@ -89,16 +82,9 @@ CREATE TABLE `invite_friend` (
   `from_user` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `to_phone` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
   `invited_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` tinyint(4) NOT NULL DEFAULT '0'
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `image_source` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `invite_friend`
---
-
-INSERT INTO `invite_friend` (`from_phone`, `from_user`, `to_phone`, `invited_at`, `status`) VALUES
-('1', 'ahihihi', '123', '0000-00-00 00:00:00', 0),
-('2', '', '1', '2017-11-29 01:05:30', 0);
 
 -- --------------------------------------------------------
 
@@ -120,15 +106,8 @@ CREATE TABLE `messages` (
 --
 
 INSERT INTO `messages` (`message_id`, `conversation_id`, `creator`, `message`, `created_at`, `is_send`) VALUES
-(1, 1, '1', 'dsfsdfsdf', '2017-10-19 00:00:00', 1),
-(2, 1, '1', 'qưeqweqwwe', '2017-10-19 00:00:00', 1),
-(3, 1, '1', '123321123', '2017-11-02 23:57:16', 0),
-(4, 1, '1', 'hihi', '2017-11-03 00:02:25', 0),
-(5, 1, '1', '123321', '2017-11-03 00:13:29', 0),
-(6, 1, '1', 'huhu', '2017-11-03 00:15:01', 0),
-(7, 1, '1', '123321', '2017-11-03 00:17:53', 0),
-(8, 1, '1', '123321123321123321', '2017-11-03 00:19:19', 0),
-(9, 1, '1', '123321123321123321', '2017-11-03 00:24:38', 0);
+(19, 5, '0924493220', 'dsa', '2017-12-13 21:04:39', 0),
+(20, 5, '01657595705', 'asdsd', '2017-12-13 21:04:44', 0);
 
 -- --------------------------------------------------------
 
@@ -167,10 +146,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`phone`, `password`, `username`, `gender`, `image_source`, `status`, `birthday`, `email`, `conversations`, `friends`) VALUES
-('1', '1', 'ahihihi', 0, '', '', '1990-01-01', 'thuongtruong2702@gmail.com', '1,2,', ''),
-('11', '123321', '1685574968', 0, '', '', '1990-01-01', NULL, '', ''),
-('123', '1', 'user1', 0, '', '', '2017-10-01', NULL, '1,', ''),
-('2', '1', '1', 0, '', '', '0000-00-00', NULL, '1,2,', '');
+('01657595705', '1', '01657595705', 0, 'http://192.168.1.69/chat/image_user/01657595705_20171213212225.jpg', '', '0000-00-00', 'gardonzx@gmail.com', '5,', ''),
+('0924493220', '1', 'zerozx', 0, '', '', '0000-00-00', 'zerozx@gmail.com', '5,', '');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -220,17 +197,20 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `conversations`
 --
 ALTER TABLE `conversations`
-  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `conversation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- AUTO_INCREMENT cho bảng `friends`
 --
 ALTER TABLE `friends`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+
 --
 -- AUTO_INCREMENT cho bảng `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;COMMIT;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
