@@ -18,7 +18,7 @@ let conversation = (() => {
     };
     let _broadcash_all_conversation = (socket, content, type) => {
         console.log(type + " --- broadcash to all conversations ---");
-        console.log("conversation lenght " + socket.conversations);
+        console.log("conversation lenght " + socket.conversations.length);
         for(let i = 0; i<socket.conversations.length;i++) {
             let element = socket.conversations[i];
             console.log(element);
