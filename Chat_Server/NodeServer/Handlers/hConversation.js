@@ -1,4 +1,5 @@
 let db = require('../Models/database');
+var hFriend = require('../Handlers/hFriend');
 
 let conversation = (() => {
     //Done
@@ -48,6 +49,10 @@ let conversation = (() => {
                     conversation_id: conversation_id,
                     conversation_name: conversation_name
                 }); // add new conversation to socket
+                var friend_socket = lst_online_user[members[index]];
+                if(typeof(friend_socket) != 'undefined'){
+                    hFriend.broadcash_all_friend(i_socket, "online", "online")
+                }
                 i_socket.emit("r_add_conversation", {
                     conversation_id: conversation_id,
                     owner: socket.username,
