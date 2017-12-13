@@ -9,7 +9,8 @@ let conversation = (() => {
 
         for (let i = 0; i < conversation_id.length; i++) {
             if (conversation_id[i] != '') {
-                socket.conversations.push(db.conversations().filter(f => f.conversation_id == conversation_id[i]));
+                let con = db.conversations().find(f => f.conversation_id == conversation_id[i]);
+                socket.conversations.push(con);
                 socket.join(conversation_id[i]);
                 console.log("Join room " + conversation_id[i]);
             }
@@ -20,10 +21,10 @@ let conversation = (() => {
         console.log("conversation lenght " + socket.conversations);
         for(let i = 0; i<socket.conversations.length;i++) {
             let element = socket.conversations[i];
-            console.log(element[0]);
-            console.log("emit to conversation " + element[0].conversation_id);
-            socket.broadcast.to(element[0].conversation_id).emit("broadcast_all_conversation",{
-                conversation_id:element[0].conversation_id,
+            console.log(element);
+            console.log("emit to conversation " + element.conversation_id);
+            socket.broadcast.to(element.conversation_id).emit("broadcast_all_conversation",{
+                conversation_id:element.conversation_id,
                 phone:socket.phone,
                 content:content,
                 type:type
