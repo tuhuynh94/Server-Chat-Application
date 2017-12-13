@@ -26,9 +26,9 @@ let mInvitation = (() =>{
         
     };
 
-    let _add_invitation = (conn,socket,to) => {
-        let sql = "INSERT INTO `invite_friend` (`from_phone`,`from_user`,`to_phone`, `invited_at`,`status`)VALUES ('"
-        + socket.phone + "', '" + socket.username + "','" + to + "', '','');";   
+    let _add_invitation = (conn,socket,to, image_source) => {
+        let sql = "INSERT INTO `invite_friend` (`from_phone`,`from_user`,`to_phone`, `invited_at`,`status`, `image_source`)VALUES ('"
+        + socket.phone + "', '" + socket.username + "','" + to + "', '', '' , '" + image_source + "');";   
         console.log(sql);
         conn.query(sql, function (err, rows) {
             if (err != null) {
